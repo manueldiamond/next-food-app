@@ -2,32 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+.food-slide-in{
+  animation: .3s forwards slide-in-left
+}
+.food-slide-out{
+  animation: .3s backwards slide-in-left
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.centered{
+  @apply flex justify-center items-center;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.catalogue-display-item-shadow{
+  @apply group-hover:drop-shadow-[0_15px_15px_rgba(0,0,0,.25)]
+}
+.scale-up-animation{
+  animation: .1s forwards scale-up;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+button,.click-scale{
+ @apply active:scale-95 hover:scale-105 scale-100
+}
+
+.yellow-shadow{
+  @apply hover:shadow-[0_5px_20px] hover:shadow-yellow-200
+}
+
+
+
+.scrollbar-hidden{ 
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For IE 11 */
+  overflow: -moz-scrollbars-none; /* For Firefox */
+  -ms-overflow-style: none; /* For IE 11 */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* For WebKit/Blink */
+}
+
+
+/* Styling for the slider */
+.slider {
+  -webkit-appearance: none; /* Hides the default slider appearance in WebKit browsers */
+  appearance: none;
+  width: 100%;
+  outline: none;
+
+  transition: opacity .2s;
+  @apply bg-[#F3F4F6] rounded-full h-[5px];
+}
+
+
+/* Styling for the slider thumb in WebKit browsers */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Removes the default appearance */
+  appearance: none;
+  width: 20px; /* Width of the thumb */
+  height: 25px; /* Height of the thumb */
+  cursor: pointer; /* Changes the cursor to a pointer */
+  @apply  bg-accent z-10 border-white border-solid border-4 rounded-[10px] ;
+}
+
+/* Styling for the slider thumb in Firefox */
+.slider::-moz-range-thumb {
+  width: 20px; /* Width of the thumb */
+  height: 25px; /* Height of the thumb */
+  
+  cursor: pointer; /* Changes the cursor to a pointer */
+  @apply  bg-accent z-10 border-white border-solid border-4 rounded-[10px] ;
 }
