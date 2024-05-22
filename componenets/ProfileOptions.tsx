@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 import TextInput from './TextInput'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useAuthContext } from '../libs/context/authContext'
+import Avatar from './Avatar'
+import { useRouter } from 'next/navigation'
 
 
 // will use later
@@ -38,7 +41,8 @@ const links=[
     {title:"Order-History",path:"/order-history"}
 ]
 const ProfileOptions = ({editing}:{editing:boolean}) => {
-  const profilePhotoUrl="/vercel.svg"
+  const {user} = useAuthContext()
+  const router=useRouter()
 //   TODO user fetch data
   const data:Record<string,string>={
     "Name":"Mohammed Tabi Malik",
@@ -51,14 +55,18 @@ const ProfileOptions = ({editing}:{editing:boolean}) => {
   const logout=()=>{
 
   }
+  
   const saveChanges=()=>{
 
   }
+   
+  const edit=()=>{
+    router.push("/profile?editing=true")
+  }
   return (
-    <div className='w-full relative'>
-         <div className='top-0 overflow-clip mx-auto bg-accent -translate-y-1/2 profile rounded-[30px] w-[151px] aspect-square'>
-          <Image  className='object-cover' src={profilePhotoUrl} width={151} height={151} alt='profile-photo '/>
-        </div>
+    <form className='w-full relative'>
+         
+        <Avatar size={151} className='top-0 mx-auto !bg-gray-100 -translate-y-1/2 profile !rounded-[30px] !w-[30%] !min-w-[151px] aspect-square' user={user}/>
         <div className='container'>
           <div className='flex flex-col gap-3'>
           {profileDetails.map(input=>{
@@ -79,7 +87,7 @@ const ProfileOptions = ({editing}:{editing:boolean}) => {
             ))}
           </div>
           <div className='container max-w-[550px] centered gap-8 text-lg py-8 font-medium'>
-            <button type={editing?'submit':'button'} onClick={saveChanges} className={` w-full  p-6 click-scale rounded-20 centered gap-5 bg-gray-1 text-white`}>
+            <button type={editing?'submit':'button'} onClick={editing?saveChanges:edit} className={` w-full  p-6 click-scale rounded-20 centered gap-5 bg-gray-1 text-white`}>
                 <span className=''>{editing?"Save Changes":"Edit Profile"}</span>
                 <Image src={"/icons/edit.svg"} width={24} height={24} alt="edit icon"/>
             </button>
@@ -89,7 +97,7 @@ const ProfileOptions = ({editing}:{editing:boolean}) => {
             </button>
           </div>
         </div>
-    </div>
+    </form>
   )
 }
 

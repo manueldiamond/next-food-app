@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Splash from "./componenets/splash";
-import { Catalogue, Footer, Header } from "./componenets";
+import Splash from "../componenets/splash";
+import { Catalogue, Footer, Header } from "../componenets";
 
 const underHeaderText="Order your favourite food!"
 

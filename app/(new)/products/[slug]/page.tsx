@@ -1,5 +1,5 @@
 
-import { Counter, Slider } from '@/app/componenets'
+import { Counter, Slider } from '@/componenets'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'

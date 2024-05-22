@@ -3,7 +3,8 @@ import { Inter, Lobster } from "next/font/google";
 import "./globals.css";
 import { Html } from "next/document";
 import React from "react";
-import { Footer, Header } from "./componenets";
+import { Footer, Header } from "../componenets";
+import { AuthProvider } from "../libs/context/authContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${lobster.variable}` }>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
       </body>
     </html>
   );

@@ -1,13 +1,13 @@
 "use client"
 import Image from 'next/image'
 import React, { useEffect } from 'react'
-import ham1 from '@/app/imgs/splash-ham-tall.png'
-import ham2 from '@/app/imgs/splash-ham.png'
+import ham1 from '@/imgs/splash-ham-tall.png'
+import ham2 from '@/imgs/splash-ham.png'
 
 const Splash = ({timed=false}) => {
   return (
     <div className={`transition duration-300 fade fixed top-0 left-0 centered w-screen h-screen bg-accent-gradient`}>
-        <div className={'animate-pulse duration-100 logo absolute font-lobster'}>
+        <div className={'animate-pulse duration-500 logo absolute font-lobster'}>
             <div className=' text-white font-[400] text-[40px]'>Tasty</div>
             <div className='mt-[-20px] ml-[70px] text-[#3C2F2F] font-[400] text-[40px]'>chef</div>
         </div>

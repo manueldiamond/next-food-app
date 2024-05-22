@@ -22,7 +22,7 @@
 }
 
 button,.click-scale{
- @apply active:scale-95 hover:scale-105 scale-100
+ @apply active:scale-95 hover:scale-105 scale-100 transition-transform duration-150
 }
 
 .yellow-shadow{
