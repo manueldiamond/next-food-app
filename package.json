@@ -2,21 +2,34 @@
   "name": "central-food-app",
   "version": "0.1.0",
   "private": true,
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db-push": " dotenv  -e .env.development.local -- npx prisma db push &&  npx prisma generate "
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
     "@vercel/postgres": "^0.8.0",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.2.0",
     "next": "14.2.3",
+    "next-auth": "^5.0.0-beta.18",
+    "pako": "^2.1.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
+    "@types/pako": "^2.0.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "postcss": "^8",

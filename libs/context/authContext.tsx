@@ -2,19 +2,7 @@
 
 import { Dispatch } from '@reduxjs/toolkit'
 import { ReactNode, createContext, useContext, useState } from 'react'
-
-export type userType={
-    id:string
-    profileImage?:string|null
-    name:string
-}|null
-
-export type authContextType={
-    user:userType
-    login?:(user:userType)=>void;
-    logout?:()=>void,
-}
-
+import { authContextType, userType } from '../types'
 
 const defaultContext={
     user:null

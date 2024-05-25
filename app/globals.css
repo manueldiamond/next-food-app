@@ -21,9 +21,6 @@
   animation: .1s forwards scale-up;
 }
 
-button,.click-scale{
- @apply active:scale-95 hover:scale-105 scale-100 transition-transform duration-150
-}
 
 .yellow-shadow{
   @apply hover:shadow-[0_5px_20px] hover:shadow-yellow-200
@@ -72,4 +69,19 @@ button,.click-scale{
   
   cursor: pointer; /* Changes the cursor to a pointer */
   @apply  bg-accent z-10 border-white border-solid border-4 rounded-[10px] ;
+}
+
+.accent-button{
+  @apply w-full click-scale rounded-20 border-solid border-[3px] text-white bg-accent centered gap-5;
+}
+.hollow-accent-button{
+  @apply w-full click-scale rounded-20 border-solid border-[3px] text-accent centered gap-5 bg-transparent border-accent 
+}
+
+button,.button,.click-scale{
+  @apply p-3 px-4 relative before:absolute active:before:opacity-20 active:before:transition-opacity before:opacity-0 before:bg-black before:w-full before:h-full after:absolute overflow-clip active:after:scale-125 after:scale-0 active:after:opacity-10   after:bg-black after:aspect-square after:min-h-full after:w-full after:rounded-full after:opacity-0 after:duration-500 after:transition-transform flex justify-center items-center active:scale-95 hover:scale-105 scale-100 transition-transform duration-150
+ }
+
+.dark-button{
+ @apply w-full click-scale rounded-20 centered gap-5 bg-gray-1 text-white
 }

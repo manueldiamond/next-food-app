@@ -3,7 +3,7 @@ import { Inter, Lobster } from "next/font/google";
 import "./globals.css";
 import { Html } from "next/document";
 import React from "react";
-import { Footer, Header } from "../componenets";
+import { Footer, Header } from "../components";
 import { AuthProvider } from "../libs/context/authContext";
 
 const inter = Inter({ subsets: ["latin"] });
