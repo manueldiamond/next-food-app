@@ -44,7 +44,7 @@ export const getFoods=async(id:string="")=>tryCatchConnectionErr(async()=>{
             end  as "isfavourite"
         from food inner join favourites on food.id = foodid
         `
-    return rows as (FoodType&{favourite:boolean})[]
+    return rows as (FoodType)[]
 })
 
 

@@ -108,9 +108,12 @@ function Form({
         }
     }
         
-     
+     const action=async(formData:FormData)=>{
+        clearErrors()
+        await submitAction(formData)
+     }
   return (
-    <form action={submitAction} className={'w-full mt-40 container pb-8 '+className}>
+    <form action={action} className={'w-full mt-40 container pb-8 '+className}>
             {heading&&<h1 className=' text-center mx-auto text-2xl font-bold'>
                 {heading}
             </h1>}

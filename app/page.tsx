@@ -1,16 +1,14 @@
-import Image from "next/image";
-import Splash from "../components/splash";
+import { auth } from "@/auth";
 import { Catalogue, Footer, Header } from "../components";
 
-const underHeaderText="Order your favourite food!"
 
-export default function Home() {
-
+export default async function Home() {
+  const session=await auth()
   return (
     <main className="">
       <Header/>
-        <p className=" container text-lg text-gray-2">{underHeaderText}</p>
-        <Catalogue/>
+        <p className=" container text-lg text-gray-2">Order your favourite food!</p>
+        <Catalogue userid={session?.user?.id}/>
       <Footer/>
     </main>
   );

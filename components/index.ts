@@ -8,10 +8,12 @@ import ProfileOptions from './ProfileOptions';
 import SignInWIthGoogleButton from '@/components/SignInWIthGoogleButton';
 import Form from './Form';
 import Spinner from './Spinner';
+import ErrorText from './ErrorText';
+import LoadingComponent from './LoadingComponent';
 export{
     Header,Footer,Catalogue,
     ProductHeaderControls,Counter,Slider,
     ProfileOptions,Form,
     SignInWIthGoogleButton,
-    Spinner,
+    Spinner,ErrorText,LoadingComponent
 }

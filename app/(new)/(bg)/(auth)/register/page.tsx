@@ -53,7 +53,7 @@ const page = ({params}:{params:Record<string,string>}) => {
         const response = await register(formData,callbackUrl)
         
         if(response.ok){
-            return router.replace("/login?callbackUrl="+callbackUrl);
+            return router.replace("/"+callbackUrl);
         }else if(response.message){
             setErrorMsg(response.message)
             if (response.errInputs)

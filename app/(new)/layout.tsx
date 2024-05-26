@@ -1,6 +1,7 @@
 import { ProductHeaderControls } from '@/components';
 import Image from 'next/image';
 import React from 'react'
+import { SessionProvider } from 'next-auth/react';
 
 export default function Layout({
     children,
@@ -8,11 +9,11 @@ export default function Layout({
     children: React.ReactNode;
   }>) {
     return (
-    <div>
+    <SessionProvider>
         <ProductHeaderControls/>
         <div className=''>
           {children}
         </div>
-    </div>
+    </SessionProvider>
     );
   }

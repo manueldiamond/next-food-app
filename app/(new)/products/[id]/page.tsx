@@ -2,7 +2,7 @@
 import { Counter, Slider } from '@/components'
 import TextLogo from '@/components/TextLogo'
 import { FoodType } from '@/libs/types'
-import { sfetch } from '@/utils/serverFetch'
+import { getFoodById } from '@/utils/db'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -17,7 +17,6 @@ type staticParamsPropsType={
 
 const page = async({params}:staticParamsPropsType) => {
   const data = await getProductData(params.id)
-   
   return(
     <>
     {data?<main className='container flex flex-col h-full pb-8'>
@@ -39,8 +38,8 @@ const page = async({params}:staticParamsPropsType) => {
       </div>
       <div className='flex-1 min-h-[2rem]'/>
       <div className='flex  font-semibold text-white text-lg justify-between h-[70px]'>
-          <div className=' rounded-20 centered bg-accent px-3 h-full shadow-xl'>GH₵ {data.price}</div>
-          <Link href={`payment?item=${data.id}`} className=' click-scale rounded-20 centered uppercase bg-gray-1 px-20 h-full shadow-xl'>Order Now</Link>
+          <div className=' rounded-20 centered bg-gray-2 px-3 h-full shadow-xl'>GH₵ {data.price}</div>
+          <Link href={`payment?item=${data.id}`} className=' click-scale accent-button !border-none  centered uppercase !w-max !px-20 h-full shadow-xl'>Order Now</Link>
       </div>
     </main>
       
@@ -55,13 +54,12 @@ const page = async({params}:staticParamsPropsType) => {
 }
 
 async function getProductData(id:string) {
- const res = await sfetch(`/api/get-food-by-id/${id}`)
-  if (!res.ok){
-    
+  try{
+    const data = await getFoodById(id)
+    return data as FoodType|null
+  }catch(e){
+
   }
- const {data} = await res.json() 
-  
-  return data as FoodType|null
 }
 
 

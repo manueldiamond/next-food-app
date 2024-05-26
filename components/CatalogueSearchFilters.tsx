@@ -7,10 +7,6 @@ const list = [
     "All",
     "Combos",
     "Sliders",
-    "Classic", 
-    
-    "Combos",
-    "Sliders",
     "Classic",
 ]
 

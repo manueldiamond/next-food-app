@@ -4,12 +4,6 @@ import { saveUserDataToDb } from '../utils/db';
 import { parseZodError, profileDetailsSchema } from '@/libs/zod';
 import { ZodError, string } from 'zod';
 import { quickUpload } from '@/libs/cloudinary';
-import { blob } from 'stream/consumers';
-import { sfetch } from '@/utils/serverFetch';
-import { strict } from 'assert';
-import { auth, update } from '@/auth';
-import { Session, User } from 'next-auth';
-import { Console, error } from 'console';
 
 
 export const saveUserData=async(data:userDataType)=>{
@@ -21,7 +15,7 @@ export const saveUserData=async(data:userDataType)=>{
         await saveUserDataToDb(data)
         console.log("save to DB: OK")
         console.log("SAVED",data)
-
+        return {};
         // const session=await auth()
         // if (!session)
         //  throw new Error()
@@ -37,8 +31,8 @@ export const saveUserData=async(data:userDataType)=>{
         if (e instanceof ConnectionError)
             return {error:e.message}
         console.log("error",e)
+        return {error:"An error occured while saving your details"}
     }
-    return {error:"An error occured while saving your details"}
 }
 
 const uploadImg=async(dataURI:string)=>{

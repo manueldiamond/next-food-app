@@ -1,3 +1,5 @@
+
+
 import NextAuth, { User } from "next-auth"
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
@@ -20,7 +22,7 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
         credentials: {
             email: {},
             password: {},
-          },
+          }, 
           authorize: async (credentials) => {
 
                 let user = null
@@ -51,23 +53,23 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
         async jwt({ token, user, account, profile,trigger,session }: any) {
           // Persist the OAuth access_token and or the user id to the token right after signin
           
+          console.log(session);
           console.log("pre=token", token);
           
           if(user){
-            token.user=user
-            token.name=user.name
+            token = {...token,...user}
           }
           if (account) {
             token.accessToken = account.access_token;
             token.account = account
           }
 
-          console.log("post-token",token)
-           // ***************************************************************
+          // ***************************************************************
           // added code
           if (trigger === "update" && session) 
-            token = {...token, user : session.user}
-
+          token = {...token, ...session.user}
+        
+          console.log("post-token",token)
           return token;
         },
         async session({ session, token, user , trigger, newSession}: any) {
@@ -76,13 +78,16 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
           console.log("pre-session",session)
           if (token) {
             session.accessToken = token.accessToken;
-            if(token.user)
-              session.user=token.user
+            
+            session.user={
+              ...token,
+              id:token.account.providerAccountId,
+              image:token.image,
+              email:token.email,
+              name:token.name,
+            } satisfies User
           }
-          console.log("post-session",session)
-          if (trigger==="update"){
-              console.log("UPDAFE",session)
-          }
+          console.log("po-session",session)
 
           return session;
         },
