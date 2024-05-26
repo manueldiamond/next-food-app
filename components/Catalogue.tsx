@@ -5,6 +5,7 @@ import SearchFilters from './CatalogueSearchFilters'
 import CatalogueItem from './CatalogueItem'
 import { FoodType } from '../libs/types';
 import { sfetch } from '@/utils/serverFetch'
+import { auth } from '@/auth';
 
 
 
@@ -37,7 +38,8 @@ async function getFoods(){
     return foods as FoodType[];
 }
 async function getFourites(){
-  const res = await sfetch(`/api/get-foods`)
+  const session=await auth()
+  const res = await sfetch(`/api/get-foods${session?("?id="+session.user?.id):""}`)
   if (!res.ok)
     throw new Error("An Error occurred while fetching it")
   const {foods} = await res.json()

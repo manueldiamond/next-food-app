@@ -1,8 +1,6 @@
-import { uploadImg } from "@/actions/profileActions"
 import { ChangeEvent, useRef, useState } from "react"
 import { json } from "stream/consumers"
 import { fileURLToPath } from "url"
-import pako from 'pako';
 
 export const useImageUpload=()=>{
     const pictureInput=useRef<HTMLInputElement|null>(null)
@@ -22,26 +20,26 @@ export const useImageUpload=()=>{
       const reader = new FileReader();
       reader.onload = async(e) => {
           const b64 = e.target!.result as string;
-          const data=pako.deflate(b64,{level:0})
-      setSelectedPhoto({ url:URL.createObjectURL(file),buffer:data,uploaded:undefined})
+          // const data=pako.deflate(b64,{level:0})
+          setSelectedPhoto({ url:URL.createObjectURL(file),buffer:b64,uploaded:undefined})
       
       };
       reader.readAsDataURL(file)
-
-
     }
     
-
     const upload=async()=>{
+      console.log(selectedPhoto)
       if (selectedPhoto.uploaded)
         return {url:selectedPhoto.uploaded}
+      console.log("fetching")
       if(selectedPhoto.buffer){
         const res=await fetch("/api/cloud/upload-image",{
           method:"POST",
           headers: { 'Content-Type': 'application/json' },
           body:JSON.stringify({buffer:selectedPhoto.buffer})
         })
-        const {e,url}=res.json() as any
+        const {e,url}=await res.json() as any
+        console.log("RECIEVED ","url",url,"e",e);
         if(e){
           return {error:"Error, unable to upload photo"}
         }

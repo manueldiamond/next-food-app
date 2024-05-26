@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
  
 export async function GET(request: Request) {
     const {searchParams} = new URL(request.url)
+    searchParams.get('id')
     try {
         const foods = await getFoods()
         return NextResponse.json({ foods }, { status: 200 });

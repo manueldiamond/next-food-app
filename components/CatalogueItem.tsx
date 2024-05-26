@@ -1,8 +1,10 @@
 "use client"
 import { FoodType } from '@/libs/types';
+import { setFavouriteFood } from '@/utils/db';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 type catalogueItemProps={
@@ -10,12 +12,20 @@ type catalogueItemProps={
     index:number,
     key:any,
 }
+
 const CatalogueItem=(
     {food,key,index}:catalogueItemProps
 )=>{
-    const [favourite,setFavourite]=useState(false);
+    const [favourite,setFavourite]=useState<undefined|null|boolean>(food.favourite);
     const toggleFavourite=()=>setFavourite(prevFav=>!prevFav)
-    
+    const {data:sesh}=useSession()
+        useEffect(()=>{
+            const t = setTimeout(()=>{
+                if(!(sesh?.user&&sesh?.user?.id))  return;
+                setFavouriteFood(food.id,sesh?.user.id,favourite as boolean)
+            },1000)
+            return ()=>{clearTimeout(t)}
+        },[favourite])
     return( 
     <div style={
         {

@@ -11,10 +11,14 @@ cloud.config({
   });
   
 export async function  quickUpload(file:string){
-  const res:{error?:string,result?:cloudinary.UploadApiResponse}={}
-    cloud.uploader.upload(file)
-    .then(result=>res.result=result)
-    .catch(e=>res.error=e)
+  const res:{error?:any,result?:cloudinary.UploadApiResponse}={}
+  console.log("coudinary upload")
+    try{
+    res.result= await cloud.uploader.upload(file)
+
+    }catch(e){
+      res.error=e;
+    }
   return res
 }
 

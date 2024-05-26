@@ -4,6 +4,11 @@ const nextConfig = {
                remotePatterns:[
                 { 
                         hostname:"res.cloudinary.com",
+                        protocol:"http",
+                        pathname:`/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/**`
+                },
+                { 
+                        hostname:"res.cloudinary.com",
                         protocol:"https",
                         pathname:`/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/**`
                 }       

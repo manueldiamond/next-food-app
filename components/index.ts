@@ -7,9 +7,11 @@ import Slider from './Slider';
 import ProfileOptions from './ProfileOptions';
 import SignInWIthGoogleButton from '@/components/SignInWIthGoogleButton';
 import Form from './Form';
+import Spinner from './Spinner';
 export{
     Header,Footer,Catalogue,
     ProductHeaderControls,Counter,Slider,
     ProfileOptions,Form,
-    SignInWIthGoogleButton
+    SignInWIthGoogleButton,
+    Spinner,
 }

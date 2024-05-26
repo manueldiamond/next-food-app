@@ -17,7 +17,7 @@ const page = async() => {
   
   return (
     <div className=' w-full '>
-       <ProfileOptions user={session.user!} data={data}/>
+       <ProfileOptions data={data}/>
     </div>
   )
 }
@@ -27,7 +27,7 @@ async function getUserData(){
   if(!session?.user?.id){
     redirect("/")
   }
-  const res = await sfetch("/api/get-user-data?id="+session.user.id,{next:{revalidate:60},
+  const res = await sfetch("/api/get-user-data?id="+session.user.id,{next:{revalidate:1},
 })
   const {data,error} = await res.json()
 

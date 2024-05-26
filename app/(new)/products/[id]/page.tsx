@@ -17,8 +17,8 @@ type staticParamsPropsType={
 
 const page = async({params}:staticParamsPropsType) => {
   const data = await getProductData(params.id)
-  if (!data)  redirect("/")
-  return (
+   
+  return(
     <>
     {data?<main className='container flex flex-col h-full pb-8'>
       <Image className='mx-auto' src={data.img} width={350} height={350} alt={"product image"}/>
@@ -28,7 +28,7 @@ const page = async({params}:staticParamsPropsType) => {
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12.9781 15.5435L8.00013 11.8848L3.02213 15.5435L4.93346 9.63479L-0.0418701 5.99945H6.1008L8.00013 0.0807877L9.89946 5.99945H16.0415L11.0668 9.63479L12.9781 15.5435Z" fill="#FF9633"/>
         </svg>
-        <span className='mr-2 text-gray-3 text-[15px]'> {data.rating}{data.prepTime?` - ${data.prepTime}`:""}</span>
+        <span className='mr-2 text-gray-3 text-[15px]'> {data.rating}{data.preptime?` - ${data.preptime}`:""}</span>
       </div>
     
       <p className='text-gray-2 text-base'>{data.description}</p>

@@ -1,31 +1,18 @@
 "use client"
 import React, { ChangeEvent, InputHTMLAttributes, LegacyRef, ReactHTMLElement, ReactNode, useEffect, useRef, useState } from 'react'
-import TextInput from './TextInput'
 import Image from 'next/image'
 import Link from 'next/link'
 import Avatar from './Avatar'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useAuthContext } from '@/libs/context/authContext'
-import { signOut, useSession } from 'next-auth/react'
 import { logout } from '@/actions/loginActions'
-import { userDataType } from '@/libs/types'
 import { User } from 'next-auth'
 import Form, { useForm } from './Form'
-import { formInput } from '../libs/types';
-import { saveUserData, uploadImg } from '@/actions/profileActions'
-import { string } from 'zod';
-import { File } from 'buffer'
+import { saveUserData, } from '@/actions/profileActions'
 import { useImageUpload } from '@/libs/ImageUpload'
-import { setEngine } from 'crypto'
-import { error } from 'console';
-
-
-// will use later
-// type profileDetailsInputFieldsType=
-//     "Name"|
-//     "Email"|
-//     "Delivery address"|
-//     "Password"
+import { useFormStatus } from 'react-dom'
+import loading from '../app/loading';
+import { Spinner } from '.'
+import { useSession } from 'next-auth/react'
 
 
 const profileDetails=[
@@ -51,15 +38,42 @@ const links=[
     {title:"Order History",path:"/order-history"},
     {title:"Change Passwod",path:"/change-history"}
 ]
+const FormButton=({editing,edit}:{editing:boolean,edit:()=>void})=>{
+  const {pending}= useFormStatus()
+  return(
 
+    <button 
+    type={editing?'submit':'button'} 
+    onClick={()=>!editing&&edit()} 
+    disabled={pending}
+    className={`group dark-button !p-6 ${pending&&" no-scale animate-pulse"}`}
+    >
+        <span className={""}>{editing?(pending?"Saving":"Save Changes"):"Edit Profile"}</span>
+        {pending?
+        <Spinner/>
+        :
+        <Image    
+          width={24} 
+          height={24} 
+          alt="edit icon"
+          src={"/icons/edit.svg"} 
+          className='group-hover:scale-110 transition-transform  group-hover:-translate-y-1' 
+        />}
+    </button>
+  )
+
+}
 const DetailsForm=({inputfields,editing,edit,saveAction}:any)=>{
   const {setErrorMsg,setErrored,controls} = useForm()
+  const action=async(formData:FormData)=>{
+    await saveAction(formData,setErrorMsg,setErrored)
+  }
   return(
     <Form 
       gap={1}
       heading={editing&&"Edit Profile"}
       className='!py-0 !my-0 flex flex-col'
-      submitAction={(formData)=>saveAction(formData,setErrorMsg,setErrored)} 
+      submitAction={action} 
       inputsArray={inputfields} 
       {...controls} 
     >
@@ -77,20 +91,7 @@ const DetailsForm=({inputfields,editing,edit,saveAction}:any)=>{
           ))}
         </div>
         <div className='container max-w-[550px] centered gap-8 text-lg py-8 font-medium'>
-          <button 
-            type={editing?'submit':'button'} 
-            onClick={()=>!editing&&edit()} 
-            className={`group dark-button !p-6`}
-          >
-              <span className=''>{editing?"Save Changes":"Edit Profile"}</span>
-              <Image    
-                width={24} 
-                height={24} 
-                alt="edit icon"
-                src={"/icons/edit.svg"} 
-                className='group-hover:scale-110 transition-transform  group-hover:-translate-y-1' 
-              />
-          </button>
+          <FormButton edit={edit} editing={editing} />
           <button 
             onClick={async()=>await logout()} 
             className='group hollow-accent-button !p-6'
@@ -104,14 +105,17 @@ const DetailsForm=({inputfields,editing,edit,saveAction}:any)=>{
   )
 }
 
-const ProfileOptions = ({user,data}:{data:Record<string,string>,user:User}) => {
+
+const ProfileOptions = ({data}:{data:Record<string,string>}) => {
+  const {update,data:session}=useSession()
+  const user = session?.user
   const router=useRouter()
   const params=useSearchParams()
   const editing=params.get("editing")
+  const [loadingImage,setLoadingImage]=useState(false)
   const {changePhoto,getPublicUrl:getImagePublicUrl,selectedPhoto,FileInputHelper}=useImageUpload()
-  const editedUser={...user,image:selectedPhoto.url?selectedPhoto.url:user.image} as  User
-  console.log(editedUser)
-  
+  const editedUser={...user,image:selectedPhoto.url?selectedPhoto.url:user?.image} as  User
+  console.log(data)
   const inputfields=data&&profileDetails.map(field=>({
     ...field,
     disabled:(field.name==="email")?true:!editing,
@@ -119,39 +123,46 @@ const ProfileOptions = ({user,data}:{data:Record<string,string>,user:User}) => {
   }))
 
   const edit=(enabled=true)=>{
-    router.push("/profile?editing="+enabled)
+    router.replace("/profile?editing="+enabled)
   }
 
   const saveChanges=async (formData:FormData,setErrorMsg:(m:string)=>void,setErrored:(e:string[])=>void)=>{
     let imageUrl:string|undefined=undefined
+    setLoadingImage(true)
     const imgresult= await getImagePublicUrl()
+    setLoadingImage(false)
     if(imgresult){
       const {error,url}=imgresult
       if(error)
         return setErrorMsg(error)
-      else{
-        imageUrl=url
-      }
-    }
-    const {error:saveError,errInputs} = await saveUserData({ 
-      id:user.id!,
+      else  imageUrl=url
+      
+   }
+    const data={ 
+      id:user?.id!,
       email:formData.get('email') as string,
       name:formData.get('name') as string,
-      profileImage:imageUrl?imageUrl:user.image
-    })
+      deliveryaddress:formData.get('deliveryaddress') as string,
+      profileimage:imageUrl?imageUrl:user?.image,
+    }
+    console.log("SAVE2",data)
+    const {error:saveError,errInputs} = await saveUserData(data)
+    console.log("ERR:",saveError)
+
     if (errInputs){
       setErrored(errInputs)
     }
     if(saveError)
       setErrorMsg(saveError)
     else{
+      console.log("Rerouting")
+      console.log(" SESSION ING")
+      const newSesh={...session,user:{...data,image:data.profileimage}}
+      console.log("newSesh",newSesh)
+      update(newSesh)
       edit(false)
     }
   }
-
-  
-
- 
   
   return (
     <div className='w-full relative'>
@@ -162,12 +173,18 @@ const ProfileOptions = ({user,data}:{data:Record<string,string>,user:User}) => {
         >
           <FileInputHelper/>
          {editing&&
-         <div className='absolute border-white border-4 translate-x-1 translate-y-1 text-white bg-black/30 p-2 aspect-square w-min right-0 bottom-0 rounded-full'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 ">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-            </svg>
-          </div>
+          <>
+          <div className='absolute border-white border-4 translate-x-1 translate-y-1 text-white bg-black/30 p-2 aspect-square w-min right-0 bottom-0 rounded-full'>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 ">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+              </svg>
+            </div>
+          {loadingImage&&<div className='absolute w-full h-full left-0 top-0'>
+            <Spinner/>
+          </div>}
+          </>
           } 
+          
         </Avatar>
       
        <DetailsForm 

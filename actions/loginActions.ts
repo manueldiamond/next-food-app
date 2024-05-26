@@ -47,7 +47,7 @@ export const tryLoginEmail=async(email:string,password:string,callbackUrl?:strin
                result.errInputs=errdata.paths
             }
             else if(err instanceof CustomError)
-                result.message=err.message
+               result.message=err.message
         }
     }
     if (result.ok)

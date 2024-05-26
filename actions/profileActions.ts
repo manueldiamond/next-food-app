@@ -8,17 +8,27 @@ import { blob } from 'stream/consumers';
 import { sfetch } from '@/utils/serverFetch';
 import { strict } from 'assert';
 import { auth, update } from '@/auth';
-import { User } from 'next-auth';
+import { Session, User } from 'next-auth';
+import { Console, error } from 'console';
 
 
 export const saveUserData=async(data:userDataType)=>{
     try{
+        console.log("saving")
         await profileDetailsSchema.parseAsync(data)
-        await saveUserData(data)
-        const session=await auth()
-        console.log("USER SESSION FROM SAVEDATA",session)
-        if (session)
-            await update({user:{...session.user,name:data.name,image:data.profileImage}})
+        console.log("schema: OK")
+
+        await saveUserDataToDb(data)
+        console.log("save to DB: OK")
+        console.log("SAVED",data)
+
+        // const session=await auth()
+        // if (!session)
+        //  throw new Error()
+        // const newSesh:Session={...session,user:{...session.user,name:data.name,image:data.profileimage}}
+        // console.log("NEW SESSION FROM SAVEDATA",newSesh)
+        // if (session)
+        //     await update(newSesh)
     }catch(e){
         if(e instanceof ZodError){
             const err=parseZodError(e)
@@ -26,13 +36,13 @@ export const saveUserData=async(data:userDataType)=>{
         }
         if (e instanceof ConnectionError)
             return {error:e.message}
+        console.log("error",e)
     }
     return {error:"An error occured while saving your details"}
 }
 
-export const uploadImg=async(dataURI:string)=>{
+const uploadImg=async(dataURI:string)=>{
     const {result,error} = await quickUpload(dataURI)
-
     return {url:result?.url,error}
 
 }

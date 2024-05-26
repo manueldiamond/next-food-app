@@ -78,7 +78,7 @@
   @apply w-full click-scale rounded-20 border-solid border-[3px] text-accent centered gap-5 bg-transparent border-accent 
 }
 
-button,.button,.click-scale{
+button,.button,.click-scale, button:not(.no-scale,.ns){
   @apply p-3 px-4 relative before:absolute active:before:opacity-20 active:before:transition-opacity before:opacity-0 before:bg-black before:w-full before:h-full after:absolute overflow-clip active:after:scale-125 after:scale-0 active:after:opacity-10   after:bg-black after:aspect-square after:min-h-full after:w-full after:rounded-full after:opacity-0 after:duration-500 after:transition-transform flex justify-center items-center active:scale-95 hover:scale-105 scale-100 transition-transform duration-150
  }
 

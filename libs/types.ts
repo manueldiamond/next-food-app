@@ -5,15 +5,15 @@ import { string } from 'zod';
 
 export type userType = {
     id:string
-    profileImage?:string|null
+    profileimage?:string|null
     name:string,
     email:string,
 }|null
 
 export type userWithPass=userType&{pass:string}
 export type userDataType=userType&{
-    deliveryAddress?:string,
-    paymentDetails?:any
+    deliveryaddress?:string,
+    paymentdetails?:any
 }
 export type authContextType={
     user:userType
@@ -26,7 +26,8 @@ export type FoodType={
     id: string;
     name: string;
     description: string;
-    prepTime: string | null;
+    preptime: string | null;
+    favourite?:boolean
     img: string;
     rating: number;
     vendor: string | null;

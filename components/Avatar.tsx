@@ -9,7 +9,7 @@ type avatarProps={
   size?:number,
   className?:string, 
   user:User|undefined,
-  children:ReactNode
+  children?:ReactNode
 }
 const Avatar = ({size=60,onClick,className="",user,children}:avatarProps) => {
   let imgURL:string|undefined|null="/icons/profile.svg"

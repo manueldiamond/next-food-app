@@ -45,7 +45,7 @@ const page = ({params}:{params:Record<string,string>}) => {
             }else{
                 setErrorMsg(response.message!)
                 if(response.errInputs)
-                 setErrored(response.errInputs)
+                    setErrored(response.errInputs)
             }
             return;
         }
@@ -63,7 +63,7 @@ const page = ({params}:{params:Record<string,string>}) => {
             submitText={"Login"}
             submitAction={handleSubmit}
             inputsArray={loginInputs}
-            // {...formControls}
+            {...formControls}
         >
             <p className='text-sm pt-2 text-gray-3 text-center'>
                 <span>Don't have an Account? </span>

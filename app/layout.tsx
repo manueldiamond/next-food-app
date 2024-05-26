@@ -5,6 +5,7 @@ import { Html } from "next/document";
 import React from "react";
 import { Footer, Header } from "../components";
 import { AuthProvider } from "../libs/context/authContext";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} ${lobster.variable}` }>
           <AuthProvider>
-            {children}
+            <SessionProvider>
+              {children}
+            </SessionProvider>
           </AuthProvider>
       </body>
     </html>

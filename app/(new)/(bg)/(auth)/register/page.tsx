@@ -44,7 +44,6 @@ const registerInputs = ([
 const page = ({params}:{params:Record<string,string>}) => {
     const router = useRouter()
     const {callbackUrl}=params
-    const {login,logout} = useAuthContext()
     const {setErrorMsg,setErrored,clearErrors,controls:formControls} = useForm()
     
     const handleSubmit=async(formData:FormData)=>{
@@ -54,7 +53,7 @@ const page = ({params}:{params:Record<string,string>}) => {
         const response = await register(formData,callbackUrl)
         
         if(response.ok){
-           return;
+            return router.replace("/login?callbackUrl="+callbackUrl);
         }else if(response.message){
             setErrorMsg(response.message)
             if (response.errInputs)
@@ -66,7 +65,6 @@ const page = ({params}:{params:Record<string,string>}) => {
         }
 
         setErrorMsg("Something went wrong, Please try again later")
-        logout!()
     }
     
     const onGoogleSignin=async()=>{
