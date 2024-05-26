@@ -1,6 +1,6 @@
 "use server"
 
-import { setFavouriteFood } from "@/utils/db"
+import { isFavouriteFood, setFavouriteFood } from "@/utils/db"
 
 export async function setFavourite(foodid:string,userid:string,fav:boolean){
     try{

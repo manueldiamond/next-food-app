@@ -2,10 +2,8 @@
   "name": "central-food-app",
   "version": "0.1.0",
   "private": true,
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
+  "browser": {  
+    "crypto":false
   },
   "scripts": {
     "dev": "next dev",

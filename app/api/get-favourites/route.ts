@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { getFavourites, getFoods } from '@/utils/db';
+import { getFavouriteFoods, } from '@/utils/db';
 import { NextResponse } from 'next/server';
  
 export async function GET(request: Request) {
@@ -8,7 +8,7 @@ export async function GET(request: Request) {
         const session=await auth()
         if(!session?.user?.id)
             throw new Error("Not signed in")
-        const favourites = await getFavourites(session.user.id)
+        const favourites = await getFavouriteFoods(session.user.id)
         return NextResponse.json({ favourites }, { status: 200 });
     }catch(e){
         console.log(e)
