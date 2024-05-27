@@ -10,7 +10,7 @@ type favouriteButtonTypes={
 }
 const FavouriteButton = ({userid,foodid,defaultValue,className}:favouriteButtonTypes) => {
 
-    const {favourite,toggleFavourite} = useFavourite(defaultValue,userid,foodid)
+    const {favourite,toggleFavourite} = useFavourite(userid,foodid,defaultValue)
     
   return (
     <button onClick={(e)=>{
