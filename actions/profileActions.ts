@@ -4,6 +4,7 @@ import { saveUserDataToDb } from '../utils/db';
 import { parseZodError, profileDetailsSchema } from '@/libs/zod';
 import { ZodError, string } from 'zod';
 import { quickUpload } from '@/libs/cloudinary';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 
 export const saveUserData=async(data:userDataType)=>{
@@ -15,6 +16,8 @@ export const saveUserData=async(data:userDataType)=>{
         await saveUserDataToDb(data)
         console.log("save to DB: OK")
         console.log("SAVED",data)
+        revalidateTag("fetcher")
+        // revalidatePath("/")
         return {};
         // const session=await auth()
         // if (!session)

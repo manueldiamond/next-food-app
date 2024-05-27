@@ -6,7 +6,7 @@ import loading from '../app/loading';
 import { FoodType, userDataType } from '@/libs/types';
 
 const fetcher = (input:string | Request | URL, init?: RequestInit | undefined) =>
-     fetch(input,{...init,next:{...init?.next,tags:["fetcher-tag"],revalidate:10}})
+     fetch(input,{...init,next:{...init?.next,tags:["fetcher"],revalidate:10}})
      .then(res =>{
         if(!res.ok)
             throw new Error()
@@ -20,7 +20,7 @@ export const useCatalogueItems=(id?:string)=>{
         url+="?id="+id
     
    const result = useSWR(url,fetcher)
-
+    console.log("FOODS",result.data?.foods)
    return {...result,foods:result.data?.foods as FoodType[]}
 }
 

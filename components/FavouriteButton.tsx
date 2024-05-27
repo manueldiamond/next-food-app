@@ -11,7 +11,7 @@ type favouriteButtonTypes={
 const FavouriteButton = ({userid,foodid,defaultValue,className}:favouriteButtonTypes) => {
 
     const {favourite,toggleFavourite} = useFavourite(defaultValue,userid,foodid)
-
+    
   return (
     <button onClick={(e)=>{
         e.stopPropagation()

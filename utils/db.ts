@@ -33,16 +33,17 @@ export const addUserToDb=async(email:string,hashedPass:string,name:string)=>tryC
 })
 
 export const getFoods=async(id:string="")=>tryCatchConnectionErr(async()=>{
-    const {rows}= !(id) ?
-        await sql`select * from food` :
-        await sql`select food.* , 
+    const {rows}= (!id) ?
+        (await sql`select * from food`) 
+        :
+        (await sql`select food.* , 
             case 
-                when favourites.userid = '7949627b-a45d-44cb-bf87-7e321b9e71c9' 
+                when favourites.userid = ${id} 
                 then true 
                 else false 
-            end  as "isfavourite"
-        from food inner join favourites on food.id = foodid
-        `
+            end  as "favourite"
+        from food left join favourites on food.id = foodid
+        where userid=${id}`)
     return rows as (FoodType)[]
 })
 
@@ -73,7 +74,8 @@ export const getFavouriteFoods=async(id:string)=>tryCatchConnectionErr(async()=>
 export const setFavouriteFood=async(foodid:string,userid:string,favourite:boolean)=>tryCatchConnectionErr(async()=>{
     await (favourite?sql`insert into favourites 
                     (foodid,userid) values
-                    (${foodid},${userid})`
+                    (${foodid},${userid}) 
+                    on conflict do nothing`
                     :
                     sql`delete from favourites 
                     where foodid = ${foodid} 

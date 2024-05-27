@@ -36,9 +36,9 @@ const profileDetails=[
   ]
 
 const links=[
-    {title:"Payment Details",path:"/payment-details"},
-    {title:"Order History",path:"/order-history"},
-    {title:"Change Passwod",path:"/change-history"}
+    {title:"Payment Details",path:"payment-details"},
+    {title:"Order History",path:"/logs/order-history"},
+    {title:"Change Password",path:"edit-password"}
 ]
 const FormButton=({editing,edit}:{editing:boolean,edit:()=>void})=>{
   const {pending}= useFormStatus()
@@ -178,7 +178,7 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
     console.log("newSesh",newSesh)
     const finalsesh=await update(newSesh)
     console.log("FINALSESSH",finalsesh)
-    revalidateTag("userdata")
+    // revalidateTag("userdata")
     edit(false)
     
   }

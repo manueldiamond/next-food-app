@@ -44,6 +44,7 @@
 .scale-up-animation{
   animation-iteration-count: 1;
   animation: .5s forwards scale-up;
+  animation-fill-mode: backwards; 
 }
 
 

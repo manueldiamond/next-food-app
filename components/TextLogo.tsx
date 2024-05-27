@@ -1,6 +1,6 @@
 import React from 'react'
 
-const name=["Central","Food"]
+const name=["Tasty","Chef"]
 
 
 const TextLogo = ({className="",fancy=false}) => {

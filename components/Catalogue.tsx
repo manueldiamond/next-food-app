@@ -17,7 +17,7 @@ const Catalogue = ({userid}:{userid?:string}) => {
         <div className='flex-wrap centered gap-5 py-10 h-full mx-auto px-0 container pb-20'>
            <LoadingComponent loading={isLoading} error={error} >
             {foods&&foods.map((food:FoodType,index:number)=>(
-              <CatalogueItem index={index} userid={userid} key={`${food.name}-${food.vendor}`} food={food}/>
+              <CatalogueItem index={index} userid={userid} key={`${food.id}`} food={food}/>
               ))}
            </LoadingComponent>
        </div>
