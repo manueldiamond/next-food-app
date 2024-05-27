@@ -53,8 +53,6 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
         async jwt({ token, user, account, profile,trigger,session }: any) {
           // Persist the OAuth access_token and or the user id to the token right after signin
           
-          console.log(session);
-          console.log("pre=token", token);
           
           if(user){
             token = {...token,...user}
@@ -69,13 +67,12 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
           if (trigger === "update" && session) 
           token = {...token, ...session.user}
         
-          console.log("post-token",token)
           return token;
         },
         async session({ session, token, user , trigger, newSession}: any) {
           // Send properties to the client, like an access_token and user id from a provider.
           
-          console.log("pre-session",session)
+          // console.log("pre-session",session)
           if (token) {
             session.accessToken = token.accessToken;
             
@@ -87,7 +84,7 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
               name:token.name,
             } satisfies User
           }
-          console.log("po-session",session)
+          // console.log("po-session",session)
 
           return session;
         },

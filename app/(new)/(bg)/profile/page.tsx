@@ -15,7 +15,7 @@ const page = async() => {
   }
   return (
     <div className=' w-full '>
-       <ProfileOptions/>
+       <ProfileOptions user={session.user}/>
     </div>
   )
 }

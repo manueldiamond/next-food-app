@@ -12,8 +12,8 @@ import { useImageUpload } from '@/libs/ImageUpload'
 import { useFormStatus } from 'react-dom'
 import { LoadingComponent, Spinner } from '.'
 import { useSession } from 'next-auth/react'
-import { useGetUserData } from '@/utils/dataFetches'
 import { userDataType } from '@/libs/types'
+import { useGetUserData } from '@/libs/dataFetches'
 
 
 const profileDetails=[
@@ -111,10 +111,10 @@ const DetailsForm=({inputfields,editing,edit,saveAction}:any)=>{
 }
 
 
-const ProfileOptions = () => {
+const ProfileOptions = ({user}:{user:User|undefined}) => {
   const {update,data:session,status}=useSession()
-  const user = session?.user
-  console.log("session",session)
+ if (session?.user)
+    (user = session.user)
 
   const router=useRouter()
   const params=useSearchParams()

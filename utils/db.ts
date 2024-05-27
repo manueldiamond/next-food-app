@@ -68,20 +68,18 @@ export const getFavouriteFoods=async(id:string)=>tryCatchConnectionErr(async()=>
                             inner join favourites 
                             on food.id=favourites.foodid
                             where userid=${id}`
-    return rows
+    return rows as FoodType[]
 })
 
 export const setFavouriteFood=async(foodid:string,userid:string,favourite:boolean)=>tryCatchConnectionErr(async()=>{
-    const {rows} = await (favourite?
-                            sql`insert into favourites 
-                                (foodid,userid) values
-                                (${foodid},${userid})`
-                            :
-                            sql`delete from favourites 
-                             where foodid = ${foodid} 
-                             and userid = ${userid})
-                            `)
-    return rows
+    await (favourite?sql`insert into favourites 
+                    (foodid,userid) values
+                    (${foodid},${userid})`
+                    :
+                    sql`delete from favourites 
+                    where foodid = ${foodid} 
+                    and userid = ${userid})
+                `)
 })
 
 

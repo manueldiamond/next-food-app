@@ -1,4 +1,4 @@
-import { ProductHeaderControls } from '@/components';
+import { HeaderControls } from '@/components';
 import Image from 'next/image';
 import React from 'react'
 

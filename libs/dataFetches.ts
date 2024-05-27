@@ -5,12 +5,13 @@ import { error } from 'console';
 import loading from '../app/loading';
 import { FoodType, userDataType } from '@/libs/types';
 
-const fetcher = (input:string | Request | URL, init?: RequestInit | undefined) => fetch(input,init).then(res => res.json())
+const fetcher = (input:string | Request | URL, init?: RequestInit | undefined) => fetch(input,{...init,next:{...init?.next,revalidate:1}}).then(res => res.json())
 
-export const useCatalogueItems=(id:string)=>{
+export const useCatalogueItems=(id?:string)=>{
     let url="/api/get-foods"
     if (id)
         url+="?id="+id
+    
    const result = useSWR(url,fetcher)
 
    return {...result,foods:result.data?.foods as FoodType[]}

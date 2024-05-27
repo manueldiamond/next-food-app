@@ -12,9 +12,12 @@ const Header = async() => {
   return (
     <div className='container items-center  flex justify-between mt-6'>
        <TextLogo />
-        <Link href={"/profile"}>
+       <div className='flex gap-2 '>
+        <span className='hidden sm:block text-2xl m-auto text-gray-3 font-bold '>{session?.user?.name}</span>
+        <Link href={"/profile"} className=''>
             <Avatar user={session?.user}/>
         </Link>
+       </div>
     
     </div>
   )

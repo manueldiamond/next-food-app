@@ -10,33 +10,31 @@ const footerLinks=[
     {
       name:"home",
       link:"/",
-      icon:"icons/home.svg"
+      icon:"/icons/home.svg"
     },  {
     name:"profile",
     link:"/profile",
-    icon:"icons/profile.svg"
+    icon:"/icons/profile.svg"
     },
     {
-    name:"message",
-    link:"/messages",
-    icon:"icons/message.svg"
+    name:"logs",
+    link:"/logs",
+    icon:"/icons/message.svg"
     },  {
     name:"favourites",
     link:"/favourites",
-    icon:"icons/heart.svg"
+    icon:"/icons/heart.svg"
     },
 
 ]
 
 const Footer = () => {
-  const {data} = useSession()
-  const user=data?.user
   const currentPath=usePathname() as string
   const isCurrentPath=(path:string)=>currentPath===path||(currentPath.includes(path)&&path.length>1)
   return (
     <>
-    {user ?
-      (<footer className=' z-50 fixed bottom-0 left-0 w-screen h-[75px] centered'>
+    {
+      (<><footer className=' z-50 fixed bottom-0 left-0 w-screen h-[75px] centered'>
         <div className='bg absolute centered h-full w-[200px] '>
           <div className='w-full h-full object-cover centered'>
             <svg className='absolute h-full' width="430" height="76" viewBox="0 0 430 76" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +63,7 @@ const Footer = () => {
               return(
                 <>
                   {index===footerLinks.length/2&&<div/>}
-                  <Link href={item.link} className=' click-scale flex flex-col gap-1 items-center'>
+                  <Link href={item.link} className={' click-scale rounded-full flex flex-col gap-1 items-center '+(!current&&"hover:opacity-100 opacity-70 ")}>
                     <Image src={item.icon}
                       width = {24}
                       height = {24}
@@ -80,10 +78,9 @@ const Footer = () => {
               </>
             )})}
         </div>
-    </footer>)
-    :
-
-    <div/>
+    </footer>
+    <div className='min-h-[100px] w-full'/>
+    </>)
   }
   </>
   )
