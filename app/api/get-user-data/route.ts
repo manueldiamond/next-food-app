@@ -1,5 +1,9 @@
 import { getUserDataById } from '@/utils/db';
 import { NextResponse } from 'next/server';
+
+export const fetchCache = "force-no-store";
+// export const revalidate = 10
+// export const revalidate = 5
  
 export async function GET(request: Request) {
   try {

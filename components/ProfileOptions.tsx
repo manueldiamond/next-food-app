@@ -14,6 +14,7 @@ import { LoadingComponent, Spinner } from '.'
 import { useSession } from 'next-auth/react'
 import { userDataType } from '@/libs/types'
 import { useGetUserData } from '@/libs/dataFetches'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 
 const profileDetails=[
@@ -122,9 +123,7 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
 
   let {isLoading,data,error}=useGetUserData(user?.id!)
 
-  const [loadingImage,setLoadingImage]=useState(false)
-
-  const {changePhoto,getPublicUrl:getImagePublicUrl,selectedPhoto,FileInputHelper}=useImageUpload()
+  const {changePhoto,loading:imgLoading,getPublicUrl:getImagePublicUrl,selectedPhoto,FileInputHelper}=useImageUpload()
   const editedUser={...user,image:selectedPhoto.url?selectedPhoto.url:user?.image} as  User
   console.log("data",data)
   
@@ -146,12 +145,9 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
 
     let imageUrl:string|undefined=undefined
     
-    setLoadingImage(true)
     
     const imgresult= await getImagePublicUrl()
     
-    setLoadingImage(false)
-
     if(imgresult){
       const {error,url}=imgresult
       if(error)
@@ -180,7 +176,9 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
     console.log(" SESSION ING")
     const newSesh={...session,user:{...data,image:data.profileimage}}
     console.log("newSesh",newSesh)
-    update(newSesh)
+    const finalsesh=await update(newSesh)
+    console.log("FINALSESSH",finalsesh)
+    revalidateTag("userdata")
     edit(false)
     
   }
@@ -200,7 +198,7 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
               </svg>
             </div>
-          {loadingImage&&<div className='absolute w-full h-full left-0 top-0'>
+          {imgLoading&&<div className='absolute w-full h-full left-0 top-0'>
             <Spinner/>
           </div>}
           </>

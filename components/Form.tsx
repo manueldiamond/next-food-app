@@ -102,9 +102,8 @@ function Form({
     const isErr=(inputName:string)=>errorInputs.includes(inputName)
 
     const onFormValueChanged=(name:string,value:string)=>{
-        clearErrors()
-        if(isErr(name)){
-            
+        if(isErr(name)||name==='submit'){
+            clearErrors()
         }
     }
         

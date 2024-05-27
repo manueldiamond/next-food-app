@@ -5,6 +5,7 @@ import { fileURLToPath } from "url"
 export const useImageUpload=()=>{
     const pictureInput=useRef<HTMLInputElement|null>(null)
     const [selectedPhoto,setSelectedPhoto]=useState<{url:string|null,buffer:any,uploaded?:string|undefined}>({url:null,buffer:null})
+    const [loading,setLoading]=useState(false)
     const changePhoto=()=>{
       // console.log("CLICKE")
       if(pictureInput.current){
@@ -28,10 +29,9 @@ export const useImageUpload=()=>{
     }
     
     const upload=async()=>{
-      console.log(selectedPhoto)
       if (selectedPhoto.uploaded)
         return {url:selectedPhoto.uploaded}
-      console.log("fetching")
+      setLoading(true)
       if(selectedPhoto.buffer){
         const res=await fetch("/api/cloud/upload-image",{
           method:"POST",
@@ -41,9 +41,14 @@ export const useImageUpload=()=>{
         const {e,url}=await res.json() as any
         console.log("RECIEVED ","url",url,"e",e);
         if(e){
+
+          setLoading(false)
           return {error:"Error, unable to upload photo"}
         }
         setSelectedPhoto(prev=>({...prev,uploaded:url}))
+  
+        setLoading(false)
+
         return {url}
       }
       
@@ -52,5 +57,5 @@ export const useImageUpload=()=>{
     const FileInputHelper=()=>(
       <input ref={pictureInput} hidden accept="image/*" onChange={pictureChanged} type='file'className='hidden invisible'/>
     )
-    return {FileInputHelper,getPublicUrl:upload,selectedPhoto,changePhoto}
+    return {FileInputHelper,loading,getPublicUrl:upload,selectedPhoto,changePhoto}
   }

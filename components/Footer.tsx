@@ -11,22 +11,23 @@ const footerLinks=[
       name:"home",
       link:"/",
       icon:"/icons/home.svg"
-    },  {
-    name:"profile",
-    link:"/profile",
-    icon:"/icons/profile.svg"
-    },
+    },  
     {
-    name:"logs",
-    link:"/logs",
-    icon:"/icons/message.svg"
-    },  {
-    name:"favourites",
-    link:"/favourites",
-    icon:"/icons/heart.svg"
-    },
-
-]
+        name:"logs",
+        link:"/logs",
+        icon:"/icons/message.svg"
+      },  {
+        name:"favourites",
+        link:"/favourites",
+        icon:"/icons/heart.svg"
+      },
+      
+      {
+      name:"profile",
+      link:"/profile",
+      icon:"/icons/profile.svg"
+      },
+  ]
 
 const Footer = () => {
   const currentPath=usePathname() as string

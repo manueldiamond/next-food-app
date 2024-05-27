@@ -10,6 +10,7 @@ import { useCatalogueItems } from '@/libs/dataFetches';
 
 const Catalogue = ({userid}:{userid?:string}) => {
   const {foods,error,isLoading} = useCatalogueItems(userid)
+  console.log(foods)
   return (
     <div className='my-10 w-full'>
        <SearchFilters />

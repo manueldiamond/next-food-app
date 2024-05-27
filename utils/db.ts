@@ -1,9 +1,9 @@
 "use server"
 
-import { auth } from "@/auth"
 import { ConnectionError, FoodType, userDataType, userType, userWithPass } from "@/libs/types"
 import { sql } from "@vercel/postgres"
 
+// export const fetchCache = "force-no-store";
 const tryCatchConnectionErr=async<T>(tryFunction:()=>T)=>{
     try{
         const result = await tryFunction()
@@ -19,7 +19,6 @@ export const isUserInDB=async(email:string)=>tryCatchConnectionErr(async()=>{
 })
 
 export const getUserFromDb=async(email:string)=>tryCatchConnectionErr(async()=>{
-   
     const {rows}=
          await sql`select name,id,pass,profileImage
                     from users where email=${email.toLowerCase()}
@@ -30,7 +29,7 @@ export const getUserFromDb=async(email:string)=>tryCatchConnectionErr(async()=>{
 
 export const addUserToDb=async(email:string,hashedPass:string,name:string)=>tryCatchConnectionErr(async()=>{
     await sql`insert into users (email,name,pass) values
-            (${email},${name},${hashedPass});`
+            (${email.toLowerCase()},${name},${hashedPass});`
 })
 
 export const getFoods=async(id:string="")=>tryCatchConnectionErr(async()=>{

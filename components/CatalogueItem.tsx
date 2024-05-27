@@ -17,7 +17,7 @@ type catalogueItemProps={
 const CatalogueItem=(
     {food,key,index,userid}:catalogueItemProps
 )=>{
-    console.log(userid)
+
     return( 
     <div style={
         {
