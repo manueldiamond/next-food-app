@@ -5,10 +5,11 @@ import React from 'react'
 
 const page = async({searchParams}:{searchParams:Record<string,string>}) => {
     const session=await auth()
-    const results = await search(searchParams["query"],session?.user?.id)
+    const searchQuery=searchParams['query']
+    const results = await search(searchQuery,session?.user?.id)
   return (
     <div>
-        <SearchFilters />
+        <SearchFilters defaultText={searchQuery}/>
         <br/>
         <br/>
         <ul>

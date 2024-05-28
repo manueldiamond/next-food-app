@@ -15,10 +15,12 @@ type searchFiltersProps={
     onSearch?:(term:string)=>void,
     onFilter?:(category:string)=>void,
     selectedCategory?:string
+    defaultText?:string
 }
 
-const SearchFilters=({onSearch,onFilter,selectedCategory}:searchFiltersProps)=>{
+const SearchFilters=({onSearch,defaultText,onFilter,selectedCategory}:searchFiltersProps)=>{
     if(!selectedCategory&&typeof selectedCategory==="string")  selectedCategory="All"
+    const [searchValue,setSearchValue]=useState(defaultText)
     const router = useRouter()    
     const path = usePathname()
     const [active,setActive]=useState(false)
@@ -30,7 +32,7 @@ const SearchFilters=({onSearch,onFilter,selectedCategory}:searchFiltersProps)=>{
     const filter=(filter:string)=>{
         if (filter==="All") filter=""
         if(onFilter) onFilter(filter)
-        else navigate("/search?filter="+filter)
+        else navigate("/search?query="+searchValue+"&filter="+filter)
     }
     const search=(data:FormData)=>{
         const searchterms=data.get('search-terms') as string
@@ -53,6 +55,8 @@ const SearchFilters=({onSearch,onFilter,selectedCategory}:searchFiltersProps)=>{
                 <input 
                     placeholder="Search" 
                     name='search-terms' 
+                    value={searchValue}
+                    onChange={(e)=>setSearchValue(e.target.value)}
                     className=' outline-none text-lg font-medium bg-transparent flex-1 h-full w-full'
                     onFocus={()=>setActive(true)}   
                     onBlur={()=>setActive(false)} 

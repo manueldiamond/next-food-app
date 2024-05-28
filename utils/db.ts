@@ -10,7 +10,8 @@ const tryCatchConnectionErr=async<T>(tryFunction:()=>T)=>{
         const result = await tryFunction()
         return result
     }catch(e){
-        console.error(e.message)
+
+        e instanceof Error&&console.error(e.message)
         throw new ConnectionError()
     }
 }

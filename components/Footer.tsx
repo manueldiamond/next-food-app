@@ -63,21 +63,22 @@ const Footer = () => {
             {footerLinks.map((item,index)=>{
               const current=isCurrentPath(item.link)
               return(
-                <li key={item.link}>
-                  {index===footerLinks.length/2&&<div/>}
-                  <Link href={item.link} className={' click-scale rounded-full flex flex-col gap-1 items-center '+(!current&&"hover:opacity-100 opacity-70 ")}>
-                    <Image src={item.icon}
-                      width = {24}
-                      height = {24}
-                      alt = {`${item.name} icon`}
-                    />
-                  {current&&<div className='dot'>
-                      <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="2" cy="2" r="2" fill="white"/>
-                      </svg>
-                    </div>}
-                  </Link>
-              </li>
+                <>{(index===Math.floor(footerLinks.length/2))&&<span className='mx-5'/>}
+                  <li key={item.link}>
+                    <Link href={item.link} className={' click-scale rounded-full flex flex-col gap-1 items-center '+(!current&&"hover:opacity-100 opacity-70 ")}>
+                      <Image src={item.icon}
+                        width = {24}
+                        height = {24}
+                        alt = {`${item.name} icon`}
+                      />
+                    {current&&<div className='dot'>
+                        <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="2" cy="2" r="2" fill="white"/>
+                        </svg>
+                      </div>}
+                    </Link>
+                </li>
+              </>
             )})}
         </ul>
     </footer>
