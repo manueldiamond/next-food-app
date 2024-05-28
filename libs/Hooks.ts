@@ -1,8 +1,21 @@
 "use client"
 import { isFavouriteFood, setFavouriteFood } from "@/utils/db";
-import { type } from "os";
 import { useEffect, useRef, useState } from "react";
 
+export const useObjectState=<T extends object>(obj:T)=>{
+    const [state,setState]=useState(obj)
+
+    const editState=(changes:Partial<T>|((current:T)=>Partial<T>))=>
+        setState(prevState=>({
+            ...prevState,
+            ...(typeof changes==='function'?(changes as (current:T)=>T)(prevState):changes)
+    }))
+    
+    // Example: Updating state with a new value
+    // editState({ name: 'Updated Name' });
+    
+    return [state, editState] as [T,typeof editState]
+}
 
 export const useFavourite=(userid:string,foodid:string,def?:boolean)=>{
     type favouriteStateType={favourite?:boolean,previousValue?:boolean,toUpdate?:boolean}
@@ -47,3 +60,5 @@ export const useFavourite=(userid:string,foodid:string,def?:boolean)=>{
     },[favourite])
     return {favourite,toggleFavourite}
 }
+
+

@@ -4,11 +4,15 @@ import { type } from 'os'
 import React, { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import TextInput from './TextInput'
+import { Spinner } from '.'
+import { useObjectState } from '@/libs/Hooks'
+import { error } from 'console';
 
 type formControlsType={
     errorInputs:string[],
     errorMsg:string,
-    clearErrors:()=>void
+    clearErrors:()=>void,
+    goodMsg:string,
 }|undefined
 
 type formProps={
@@ -60,7 +64,7 @@ const FormChildren=({
                     disabled={pending} 
                     className={`${pending&&"animate-pulse pt-8"} accent-button`}
                 >
-                    {<span className=''>{submitText}</span>}
+                    {<span className=''>{pending?<Spinner/>:submitText}</span>}
                 </button>
             }
 
@@ -69,9 +73,11 @@ const FormChildren=({
 }
 
 export const useForm=()=>{
-    const [errorMsg,setErrorMsg]=useState("")
-    const [errorInputs,setErroredInputs] = useState<string[]>([])
+    const [msg,setMsg]=useObjectState({error:"",good:""})
 
+    const [errorInputs,setErroredInputs] = useState<string[]>([])
+    const setErrorMsg=(tex:string)=>setMsg({error:tex})
+    const setGoodMsg=(tex:string)=>setMsg({good:tex})
     const setErrored=(inputNames:string[])=>setErroredInputs(prevEI=>(
         [
             ...prevEI,
@@ -83,8 +89,8 @@ export const useForm=()=>{
         setErroredInputs([])
     }
 
-    const controls = {errorInputs,errorMsg,clearErrors}
-    return {setErrorMsg,setErrored,clearErrors, controls,}
+    const controls = {errorInputs,errorMsg:msg.error,goodMsg:msg.good,clearErrors}
+    return {setGoodMsg,setErrorMsg,setErrored,clearErrors, controls,}
 }
 
 function Form({
@@ -94,6 +100,7 @@ function Form({
     heading, 
     submitText,
     errorMsg="",
+    goodMsg,
     inputsArray,
     errorInputs=[],
     submitAction,
@@ -116,7 +123,8 @@ function Form({
             {heading&&<h1 className=' text-center mx-auto text-2xl font-bold'>
                 {heading}
             </h1>}
-            <p className=' text-center text-red-500 py-5'>{errorMsg}</p>
+            {goodMsg&&<p className=' mb-1 text-center bg-green-100 rounded-2xl text-green-900 py-5'>{goodMsg}</p>}
+            {errorMsg&&<p className=' text-center bg-red-100 rounded-2xl text-red-900 py-5'>{errorMsg}</p>}
             <FormChildren 
                 gap={gap}
                 errorCheck={isErr} 

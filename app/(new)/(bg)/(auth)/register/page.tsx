@@ -44,16 +44,22 @@ const registerInputs = ([
 const page = ({params}:{params:Record<string,string>}) => {
     const router = useRouter()
     const {callbackUrl}=params
-    const {setErrorMsg,setErrored,clearErrors,controls:formControls} = useForm()
+    const {setErrorMsg,setGoodMsg,setErrored,clearErrors,controls:formControls} = useForm()
     
     const handleSubmit=async(formData:FormData)=>{
  
         clearErrors()
         
         const response = await register(formData,callbackUrl)
-        
+        console.log(response)
         if(response.ok){
-            return router.replace("/");
+            setGoodMsg(response.message!)
+            setTimeout(()=>
+                router.replace("/login?callbackUrl="+callbackUrl)
+            ,2000)
+            // router.replace("/"+callbackUrl!=='undefined'?callbackUrl:"");
+
+            return; 
         }else if(response.message){
             setErrorMsg(response.message)
             if (response.errInputs)

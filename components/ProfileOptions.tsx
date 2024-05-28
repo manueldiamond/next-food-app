@@ -121,14 +121,13 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
   const params=useSearchParams()
   const editing=Boolean(params.get("editing"))
 
-  let {isLoading,data,error}=useGetUserData(user?.id!)
+  let {isLoading,data,error,mutate}=useGetUserData(user?.id!)
 
   const {changePhoto,loading:imgLoading,getPublicUrl:getImagePublicUrl,selectedPhoto,FileInputHelper}=useImageUpload()
   const editedUser={...user,image:selectedPhoto.url?selectedPhoto.url:user?.image} as  User
-  console.log("data",data)
   
   const depenencyArr=[editing,isLoading,...(!data?[0,0,0]:[data.name,data.deliveryaddress,data.profileimage])];
-  console.log(depenencyArr)
+
   const inputfields=useMemo(
     ()=>!data?[]:profileDetails.map(field=>({
     ...field,
@@ -142,12 +141,8 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
   }
 
   const saveChanges=async (formData:FormData,setErrorMsg:(m:string)=>void,setErrored:(e:string[])=>void)=>{
-
+    const imgresult= await getImagePublicUrl() 
     let imageUrl:string|undefined=undefined
-    
-    
-    const imgresult= await getImagePublicUrl()
-    
     if(imgresult){
       const {error,url}=imgresult
       if(error)
@@ -172,13 +167,9 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
     if(saveError)
       return setErrorMsg(saveError)
     
-    console.log("Rerouting")
-    console.log(" SESSION ING")
     const newSesh={...session,user:{...data,image:data.profileimage}}
-    console.log("newSesh",newSesh)
     const finalsesh=await update(newSesh)
-    console.log("FINALSESSH",finalsesh)
-    // revalidateTag("userdata")
+    mutate(data)
     edit(false)
     
   }

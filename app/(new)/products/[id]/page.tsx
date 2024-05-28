@@ -62,5 +62,5 @@ async function getProductData(id:string) {
   }
 }
 
-
+// export async function generate
 export default page

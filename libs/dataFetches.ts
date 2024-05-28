@@ -4,6 +4,8 @@ import { useSession } from 'next-auth/react';
 import { error } from 'console';
 import loading from '../app/loading';
 import { FoodType, userDataType } from '@/libs/types';
+import { useObjectState } from './Hooks';
+import { useState } from 'react';
 
 const fetcher = (input:string | Request | URL, init?: RequestInit | undefined) =>
      fetch(input,{...init,next:{...init?.next,tags:["fetcher"],revalidate:10}})
@@ -15,13 +17,13 @@ const fetcher = (input:string | Request | URL, init?: RequestInit | undefined) =
 })
 
 export const useCatalogueItems=(id?:string)=>{
-    let url="/api/get-foods"
-    if (id)
-        url+="?id="+id
-    
+    const [filter,setFilter]=useState<string>("")
+
+    let url=`/api/get-foods?id=${id}&filters=${filter}`
+
    const result = useSWR(url,fetcher)
     console.log("FOODS",result.data?.foods)
-   return {...result,foods:result.data?.foods as FoodType[]}
+   return {...result,foods:result.data?.foods as FoodType[],setFilter,activeFilter:filter}
 }
 
 export const useGetUserData=(id:string)=>{    

@@ -19,7 +19,7 @@ const Avatar = ({size=60,onClick,className="",user,children}:avatarProps) => {
     if(!imgURL && user.name){
       const first=user?.name[0]
       const second=user.name.includes(" ")&&user!.name[user!.name.indexOf(" ")+1]
-      initials=`${first}${second?second:""}}`
+      initials=`${first}${second?second:""}`
     }
   }
   return (

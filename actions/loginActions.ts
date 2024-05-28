@@ -51,7 +51,7 @@ export const tryLoginEmail=async(email:string,password:string,callbackUrl?:strin
         }
     }
     if (result.ok)
-        redirect(callbackUrl?callbackUrl:"/profile")
+        redirect("/"+(callbackUrl&&callbackUrl!=='undefined'?callbackUrl:""))
 
     return result
 }
@@ -84,17 +84,21 @@ export const register=async(formData:FormData,callbackUrl?:string) =>{
         console.log("Added new User to DB")
 
 
-        console.log("Attempted Login")
+        console.log("Attempting Login")
+        
+        
+        // const loginResult = tryLogin(email,password)
+        
+        // if(!loginResult.ok){
+            //     // setTimeout(2000,redirectToLogin.bind(callbackUrl))
+            //     console.log(loginResult.message)
+            //     result.redirect=true
+            // throw new LoginError("Account Created, redirecting you to login")
+            
 
-       
-        const loginResult = await tryLoginEmail(email,password,callbackUrl)
-
-        if(!loginResult.ok){
-            // setTimeout(2000,redirectToLogin.bind(callbackUrl))
-            console.log(loginResult.message)
-            result.redirect=true
-            throw new LoginError("Account Created, redirecting you to login")
-        }
+        console.log("Attempt Cancelled")
+            // result.redirect=true
+        result.message="Account Created, redirecting you to login"
         result.ok=true
 
     }catch(e){

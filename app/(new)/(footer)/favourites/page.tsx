@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import {  FavouritesItem, Footer, HeaderControls } from '@/components'
+import {  ListedProduct as FavouritesItem, Footer, HeaderControls } from '@/components'
 import { FoodType } from '@/libs/types'
 import { getFavouriteFoods } from '@/utils/db'
 import { redirect } from 'next/navigation'

@@ -2,6 +2,7 @@
 
 import { ConnectionError, FoodType, userDataType, userType, userWithPass } from "@/libs/types"
 import { sql } from "@vercel/postgres"
+import { type } from "os"
 
 // export const fetchCache = "force-no-store";
 const tryCatchConnectionErr=async<T>(tryFunction:()=>T)=>{
@@ -32,18 +33,30 @@ export const addUserToDb=async(email:string,hashedPass:string,name:string)=>tryC
             (${email.toLowerCase()},${name},${hashedPass});`
 })
 
-export const getFoods=async(id:string="")=>tryCatchConnectionErr(async()=>{
-    const {rows}= (!id) ?
-        (await sql`select * from food`) 
-        :
-        (await sql`select food.* , 
-            case 
-                when favourites.userid = ${id} 
-                then true 
-                else false 
-            end  as "favourite"
-        from food left join favourites on food.id = foodid
-        where userid=${id}`)
+export const getFoods=async(id:string="",filters:Partial<{search:string,category:string|string[]}>)=>tryCatchConnectionErr(async()=>{
+    const {search,category}=filters
+    let query=`select food.* ${id?`case 
+            when fav.foodid is not null 
+            then true else false 
+            end  as "favourite"`:""}
+            from food 
+            ${id?`left join (
+                select foodid from favourites where userid=$1 
+            ) as fav on food.id = foodid`:""}
+            ${search?`where name like $2 or description like $2 or vendor like $2`:""}
+            ${category?`where tags like $3`:""}
+        `
+    
+    const params=[id,`%${search}%`,`%${category}%`]
+
+    const {rows}= await sql.query(query,params)
+    //         select food.* ${sql``} from food
+            
+    //     `
+    //     :
+    //     (await sql`select food.* , 
+            
+    //         l)
     return rows as (FoodType)[]
 })
 
@@ -64,7 +77,7 @@ export const getUserDataById=async(id:string)=>tryCatchConnectionErr(async()=>{
 })
 
 export const getFavouriteFoods=async(id:string)=>tryCatchConnectionErr(async()=>{
-    const {rows} = await sql`select * from food 
+    const {rows} = await sql`select food.* from food 
                             inner join favourites 
                             on food.id=favourites.foodid
                             where userid=${id}`

@@ -26,7 +26,6 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
           authorize: async (credentials) => {
 
                 let user = null
-                // return {id:1,name:"b"};                
                 const { email, password } = await signInSchema.parseAsync(credentials)
                 
                 console.log("zod validated\nfetching user...")
@@ -42,7 +41,7 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
                 if(!await isPasswordValid(password,user.pass))
                     throw new LoginError("Invalid Password")
 
-                console.log(user)
+                console.log("Signed in as ",user.name)
                 const auth_user = {id:user.id, name:user.name, image:user.profileimage, email }
                 return auth_user
           },
@@ -72,7 +71,6 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
         async session({ session, token, user , trigger, newSession}: any) {
           // Send properties to the client, like an access_token and user id from a provider.
           
-          // console.log("pre-session",session)
           if (token) {
             session.accessToken = token.accessToken;
             
@@ -84,7 +82,6 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
               name:token.name,
             } satisfies User
           }
-          // console.log("po-session",session)
 
           return session;
         },

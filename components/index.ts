@@ -10,12 +10,13 @@ import Form from './Form';
 import Spinner from './Spinner';
 import ErrorText from './ErrorText';
 import LoadingComponent from './LoadingComponent';
-import FavouritesItem from './FavouritesItem';
+import ListedProduct from './FavouritesItem';
+import SearchFilters from '@/components/CatalogueSearchFilters';
 export{
     Header,Footer,Catalogue,
     HeaderControls,Counter,Slider,
     ProfileOptions,Form,
     SignInWIthGoogleButton,
     Spinner,ErrorText,LoadingComponent,
-    FavouritesItem,
+    ListedProduct,SearchFilters,
 }

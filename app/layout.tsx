@@ -16,8 +16,8 @@ const lobster = Lobster({
 });
 
 export const metadata: Metadata = {
-  title: "Cental Food",
-  description: "Order for food around online and get it delivered to your doporstep with the click of a button",
+  title: "Tasty Chef",
+  description: "Order food around Central Campus online and have it delivered right to your doorstep!",
 };
 
 

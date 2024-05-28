@@ -7,13 +7,14 @@ import FavouriteButton from './FavouriteButton';
 
 type favouriteItemProps={
     food:FoodType
-    key:any,
+    key?:any,
     userid:string
 }
 
-const FavouritesItem=(
+const ListedProduct=(
     {food,key,userid}:favouriteItemProps
 )=>{
+    if(!key) key=food.id
     return( 
     <div  key={key} className=' rounded-[20px] centered w-full min-w-[225px] min-h-[185px] transition scale-up-animation group hover:shadow-xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
         <Link href={`/products/${food.id}`} className='flex centered flex-1'>
@@ -55,4 +56,4 @@ const FavouritesItem=(
 
 
 
-export default FavouritesItem
+export default ListedProduct

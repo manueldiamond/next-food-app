@@ -11,7 +11,7 @@ const Splash = ({timed=false}) => {
         <div className='animate-pulse duration-500 ab'>
           <TextLogo fancy/>
         </div>
-        <div  className='food-slide-in flex bottom-0 absolute items-end left-0'>
+        <div  className='select-none pointer-events-none food-slide-in flex bottom-0 absolute items-end left-0'>
           <Image src={ham1}
               className="object-contain"
               alt='a tall hamburger'
