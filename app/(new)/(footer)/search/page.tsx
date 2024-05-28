@@ -12,7 +12,7 @@ const page = async({searchParams}:{searchParams:Record<string,string>}) => {
         <br/>
         <br/>
         <ul>
-        {results?results.map((food=>(
+        {results.length>0?results.map((food=>(
             <li key={food.id}>
                 <ListedProduct 
                     food={food} 
@@ -33,6 +33,6 @@ const search =async (searchTerms:string,userid:string|undefined) => {
     try{
         return await getFoods(userid,{search:searchTerms})
     }catch{
-        return;
+        return [ ];
     }
 }

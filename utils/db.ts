@@ -10,6 +10,7 @@ const tryCatchConnectionErr=async<T>(tryFunction:()=>T)=>{
         const result = await tryFunction()
         return result
     }catch(e){
+        console.error(e.message)
         throw new ConnectionError()
     }
 }
@@ -22,7 +23,7 @@ export const isUserInDB=async(email:string)=>tryCatchConnectionErr(async()=>{
 export const getUserFromDb=async(email:string)=>tryCatchConnectionErr(async()=>{
     const {rows}=
          await sql`select name,id,pass,profileImage
-                    from users where email=${email.toLowerCase()}
+                    from users where lower(email)=${email.toLowerCase()}
                     limit 1;`
     if (rows.length>0)
         return rows[0] as userWithPass
@@ -33,22 +34,37 @@ export const addUserToDb=async(email:string,hashedPass:string,name:string)=>tryC
             (${email.toLowerCase()},${name},${hashedPass});`
 })
 
-export const getFoods=async(id:string="",filters:Partial<{search:string,category:string|string[]}>)=>tryCatchConnectionErr(async()=>{
-    const {search,category}=filters
-    let query=`select food.* ${id?`case 
-            when fav.foodid is not null 
-            then true else false 
-            end  as "favourite"`:""}
-            from food 
-            ${id?`left join (
-                select foodid from favourites where userid=$1 
-            ) as fav on food.id = foodid`:""}
-            ${search?`where name like $2 or description like $2 or vendor like $2`:""}
-            ${category?`where tags like $3`:""}
-        `
+export const getFoods=async(id:string="",filters:Partial<{search:string,category:string}>)=>tryCatchConnectionErr(async()=>{
     
-    const params=[id,`%${search}%`,`%${category}%`]
+    const {search,category}=filters
+    const params=[]
+   
+    const lastAddedParam=()=>"$"+(params.length)
 
+    let query=`select food.* `
+    if(id){
+        query+=` , case 
+                when fav.foodid is not null 
+                then true else false 
+                end  as "favourite" `
+        params.push(id)
+    }
+        query+=` from food 
+            ${id?`left join 
+            (select foodid from favourites where userid=$1 )
+             as fav on food.id = foodid`:""} `
+    if (search){
+        params.push(`%${search.toLowerCase()}%`)
+        const searchparam=lastAddedParam()
+        query+=` where lower(name) like ${searchparam} or lower(description) like ${searchparam}  or lower(vendor) like ${searchparam} `
+    }
+    if (category){
+        params.push(`%${category.toLowerCase()}%`)
+        query+=`where lower(tags) like ${lastAddedParam()}`
+    }
+
+    console.log(query)
+    console.log(params)
     const {rows}= await sql.query(query,params)
     //         select food.* ${sql``} from food
             
@@ -92,7 +108,7 @@ export const setFavouriteFood=async(foodid:string,userid:string,favourite:boolea
                     :
                     sql`delete from favourites 
                     where foodid = ${foodid} 
-                    and userid = ${userid})
+                    and userid = ${userid}
                 `)
 })
 
