@@ -1,10 +1,7 @@
 
-import { ErrorText, PayNow, SearchFilters } from '@/components';
-import { useSession, SessionProvider } from 'next-auth/react';
-import { redirect, useRouter } from 'next/navigation'
-import React, { forwardRef, MutableRefObject, useRef, useState } from 'react'
-import { usePaystackPayment } from 'react-paystack'
-import { Session } from 'next-auth';
+import { PayNow } from '@/components';
+import { redirect } from 'next/navigation'
+
 import { auth } from '@/auth';
 import { getFoodPriceFromDB } from '@/utils/db';
 
@@ -22,16 +19,17 @@ const page = async ({searchParams:{item,amount=1,name:itemTag=""}}:{searchParams
   }
   if (itemTag)  itemTag=`${itemTag[0].toUpperCase()}${itemTag.slice(1).toLowerCase()} `
   const Orderprice  = foodInfo.price*amount
-  const tax = Math.round(((Orderprice*.01) + Number.EPSILON) * 100) / 100 //we're just gonna assume MOMO charges is 1%... Compute real value later
+  const tax = Math.round(((Orderprice*.01)) * 100) / 100 //we're just gonna assume MOMO charges is 1%... Compute real value later
   const orderSummary = [
-    {name:itemTag+foodInfo.name, count:amount,main:true},
+    {name:itemTag+foodInfo.name, text:`${foodInfo.price} × ${amount}`,main:true},
     {name:'Order', amt:Orderprice},
     {name:'Tax',amt:tax},
     {name:'Delivery fees',amt:5.0},
   ] 
   let total=0
   orderSummary.forEach(item=>item.amt&&(total+=item.amt))
-  
+  total=parseFloat(total.toFixed(2))
+
   //TODO:get payment methods
   const paymentMethods=[]
 
@@ -40,10 +38,10 @@ const page = async ({searchParams:{item,amount=1,name:itemTag=""}}:{searchParams
       <section>
         <h3 className='text-xl py-7 font-semibold text-gray-1'>Order summary</h3>
         <div className='px-4 flex flex-col gap-2'>
-          {orderSummary.map(({name,amt,count,main})=>(
+          {orderSummary.map(({name,amt,text,main})=>(
               <p className={`${main?"text-gray-3 font-bold":"text-gray-4"} text-lg flex justify-between`}>
               <span>{name}</span>
-              <span>{amt?"GH₵"+amt:count}</span>
+              <span>{amt?("GH₵"+amt):text}</span>
             </p> 
             ))}
           <hr className=' py-5 text-[#F0F0F0]'/>

@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${poppins.className} ${lobster.variable}` }>
+      <body className={`${inter.className} ${poppins.variable} ${lobster.variable}` }>
           <AuthProvider>
             <SessionProvider>
               {children}

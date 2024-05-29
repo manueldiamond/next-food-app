@@ -14,6 +14,7 @@ const nextConfig = {
                 }       
                ]
         },
+        // I saw this online on stack... 
         async rewrites() {
                 return [
                   {
@@ -22,7 +23,15 @@ const nextConfig = {
                   },
                 ]
               },
-        
+        // I'm thinking it should look like this:       
+        headers:[
+                {
+                 // 
+                 // source:
+                 // some headers congig shii..
+                }
+        ] ,
+
         experimental:{
                 serverActions:{
                         bodySizeLimit:'4mb'

@@ -1,11 +1,8 @@
 import { number, string } from 'zod';
 "use server"
 
-import { ConnectionError, FoodType, userDataType, userType, userWithPass } from "@/libs/types"
+import { ConnectionError, FoodType, userDataType, userWithPass } from "@/libs/types"
 import { sql } from "@vercel/postgres"
-import { type } from "os"
-
-// export const fetchCache = "force-no-store";
 
 // FOOD(id,name,description,c)
 // USER(id, name, email, pass, )

@@ -11,8 +11,7 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isProtectedRoute = nextUrl.pathname.startsWith('/profile') || nextUrl.pathname.startsWith('/payment');
-
+      const isProtectedRoute = nextUrl.pathname.startsWith('/profile') || nextUrl.pathname.includes('/payment');
       if (isProtectedRoute) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page

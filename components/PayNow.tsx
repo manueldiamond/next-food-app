@@ -1,21 +1,22 @@
 "use client"
 import { Session, User } from 'next-auth'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { config } from 'process'
 import { MutableRefObject, forwardRef, useRef, useState } from 'react'
 import { PaystackButton, usePaystackPayment } from 'react-paystack'
-import { HookConfig } from 'react-paystack/dist/types'
+import { HookConfig, PaystackProps } from 'react-paystack/dist/types'
+import { number } from 'zod'
 
 type payNowProps={
     user:User,
-    amount:number
+  amount:number
 }
 
 //this is a hacky solution just so i get it done fast.. 
 //I'll probably use a hook that makes look better later
 const useModal=()=>{
   const [open,setOpen]=useState(false)
-
   return({
     open:()=>{setOpen(true)},
     close:()=>{setOpen(false)},
@@ -26,8 +27,18 @@ const SuccessModal=({
   open=()=>{ },
   close=()=>{ },
   visible=false,
-})=>{
+  text,//unused
+  style="ok"//unused for now
+}:Partial<{
+    open:()=>void,
+    close:()=>void,
+    visible:boolean,
+    text:string,
+    style:"ok"|"error"|"!"
+
+}>)=>{
   const router=useRouter()
+
   return(
     visible?
     <div className='z-50 fixed top-0 left-0 centered w-full h-full'>
@@ -39,7 +50,7 @@ const SuccessModal=({
         </div> 
         <h1 className='text-accent pt-5 text-3xl'>Success !</h1>
         <p className='max-w-[12.5rem] text-center text-gray-3 pt-5 py-8 text-sm'>Your payment was successful.<br/> A receipt for this purchase has been sent to your email.</p>
-        <button onClick={()=>{close();}} className=' text-lg accent-button w-full !border-none'>Go back</button>
+        <Link href={"/"} onClick={()=>{close();}} className=' text-lg accent-button w-full !border-none'>Go back</Link>
       </div>
       <div className='opacity-0 z-0 bg-black/10 scale-150 left-0 top-0 animate-opacity fixed w-screen h-screen backdrop-blur-lg'/>
     </div>
@@ -55,12 +66,16 @@ const PayNow = ({user,amount}:payNowProps) => {
   const lastname = name!.slice(spaceIndex&&spaceIndex)
   
   const modalControls=useModal()
+
+  const amountInPesewas=Math.ceil(amount*100)
   
-  const paymentSuccess=()=>modalControls.open()
-  const paymentCancelled=()=>modalControls.open()//DebugTesting
+  const paymentSuccess=()=>modalControls.open()//....
+  const paymentCancelled=()=>modalControls.open()//I know, same logic for both...- ITS FOR SCIENCE!!
 
   return (
     <div className='flex justify-between items-center'>
+      {/* <PaystackButton {...componentProps}/> */}
+      
       <SuccessModal {...modalControls} />
 
         <div>
@@ -70,7 +85,7 @@ const PayNow = ({user,amount}:payNowProps) => {
         <PaystackButton 
           className='button dark-button   max-w-[13.0625rem] min-h-[4.375rem]'
           text='Pay Now'
-          amount={amount}
+          amount={amountInPesewas}
           email={email!}
           currency='GHS'
           publicKey={process.env.NEXT_PUBLIC_PAYSTACK_TEST_KEY!}
