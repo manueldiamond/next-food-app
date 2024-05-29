@@ -12,6 +12,8 @@ import ErrorText from './ErrorText';
 import LoadingComponent from './LoadingComponent';
 import ListedProduct from './FavouritesItem';
 import SearchFilters from '@/components/CatalogueSearchFilters';
+import PayNow from './PayNow';
+import { ProductOrderButtons } from './ProductOrderButtons';
 export{
     Header,Footer,Catalogue,
     HeaderControls,Counter,Slider,
@@ -19,4 +21,5 @@ export{
     SignInWIthGoogleButton,
     Spinner,ErrorText,LoadingComponent,
     ListedProduct,SearchFilters,
+    PayNow,ProductOrderButtons
 }

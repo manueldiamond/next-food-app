@@ -14,7 +14,15 @@ const nextConfig = {
                 }       
                ]
         },
-    
+        async rewrites() {
+                return [
+                  {
+                    source: '/api/:path*',
+                    destination: 'https://api.paystack.co/:path*',
+                  },
+                ]
+              },
+        
         experimental:{
                 serverActions:{
                         bodySizeLimit:'4mb'

@@ -17,7 +17,7 @@ export const useObjectState=<T extends object>(obj:T)=>{
     return [state, editState] as [T,typeof editState]
 }
 
-export const useFavourite=(userid:string,foodid:string,def?:boolean)=>{
+export const useFavourite=(userid:string|null,foodid:string|null,def?:boolean)=>{
     type favouriteStateType={favourite?:boolean,previousValue?:boolean,toUpdate?:boolean}
     const [{favourite,previousValue,toUpdate},setFavState]=useState<favouriteStateType>({favourite:def,previousValue:def,toUpdate:typeof def==='undefined'});
     const intervalRef = useRef<any>(null)
@@ -35,7 +35,7 @@ export const useFavourite=(userid:string,foodid:string,def?:boolean)=>{
         clearInterval(intervalRef.current)
         const queryDB=async(tries=0)=>{
             console.log("pre-favourite",favourite)
-            if(!userid) return;
+            if(!(userid && foodid)) return;
             try{
                 if(typeof previousValue==='undefined'){
                     const favourite= await isFavouriteFood(foodid,userid)

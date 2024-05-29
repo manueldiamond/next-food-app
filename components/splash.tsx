@@ -10,6 +10,7 @@ const Splash = ({timed=false}) => {
     <div className={`transition duration-300 fade fixed top-0 left-0 centered w-screen h-screen bg-accent-gradient`}>
         <div className='animate-pulse duration-500 ab'>
           <TextLogo fancy/>
+          <p className='text-xs text-white/50 text-right '>Let, im cook!</p>
         </div>
         <div  className='select-none pointer-events-none food-slide-in flex bottom-0 absolute items-end left-0'>
           <Image src={ham1}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Lobster } from "next/font/google";
+import { Inter, Lobster, Poppins } from "next/font/google";
 import "./globals.css";
 import { Html } from "next/document";
 import React from "react";
@@ -8,6 +8,11 @@ import { AuthProvider } from "../libs/context/authContext";
 import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  weight:["100","200","300","400","500","600","700","800","900"],
+  subsets: ["latin"],
+  variable:'--poppins-font'
+});
 
 const lobster = Lobster({
   weight:"400",
@@ -28,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${lobster.variable}` }>
+      <body className={`${inter.className} ${poppins.className} ${lobster.variable}` }>
           <AuthProvider>
             <SessionProvider>
               {children}

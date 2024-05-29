@@ -1,3 +1,4 @@
+import { number, string } from 'zod';
 "use server"
 
 import { ConnectionError, FoodType, userDataType, userType, userWithPass } from "@/libs/types"
@@ -5,13 +6,15 @@ import { sql } from "@vercel/postgres"
 import { type } from "os"
 
 // export const fetchCache = "force-no-store";
+
+// FOOD(id,name,description,c)
+// USER(id, name, email, pass, )
 const tryCatchConnectionErr=async<T>(tryFunction:()=>T)=>{
     try{
         const result = await tryFunction()
         return result
     }catch(e){
-
-        e instanceof Error&&console.error(e.message)
+        e instanceof Error&&console.error("EE",e.message)
         throw new ConnectionError()
     }
 }
@@ -130,4 +133,11 @@ export const saveUserDataToDb=async({name,deliveryaddress,id,profileimage}:userD
             deliveryaddress = ${deliveryaddress},
             profileimage = ${profileimage} 
         where id = ${id}; `
+})
+
+
+export const getFoodPriceFromDB =async(foodId:string)=>tryCatchConnectionErr(async()=>{
+    const {rows}=await sql`select name , price from food where id=${foodId} limit 1`
+    if (rows.length>0)
+        return rows[0] as {name:string,price: number}
 })

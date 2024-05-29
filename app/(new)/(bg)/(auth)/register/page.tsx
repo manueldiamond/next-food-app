@@ -51,7 +51,6 @@ const page = ({params}:{params:Record<string,string>}) => {
         clearErrors()
         
         const response = await register(formData,callbackUrl)
-        console.log(response)
         if(response.ok){
             setGoodMsg(response.message!)
             setTimeout(()=>

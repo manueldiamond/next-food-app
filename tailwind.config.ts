@@ -20,9 +20,11 @@ const config: Config = {
         "gray-1":"#3C2F2F",
         "gray-2":"#6A6A6A",
         "gray-3":"#808080",
+        "gray-4":"#7D7D7D",
       },
       fontFamily:{
-        "lobster":"var(--lobster-font)"
+        "lobster":"var(--lobster-font)",
+        "poppins":'var(--poppins-font)'
       },
       backgroundImage: {
         "accent-gradient": "linear-gradient(171.57deg, #FF939B 0.66%, #EF2A39 64.7%)",

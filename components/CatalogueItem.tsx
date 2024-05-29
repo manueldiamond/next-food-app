@@ -23,7 +23,7 @@ const CatalogueItem=(
         {
             animationDelay:`${index*.2}s`
         }
-    } key={key} className='flex flex-col rounded-[20px] w-[225px] min-h-[185px] transition scale-up-animation group hover:scale-105 hover:shadow-2xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
+    } key={food.id} className='flex flex-col rounded-[20px] w-[225px] min-h-[185px] transition scale-up-animation group hover:scale-105 hover:shadow-2xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
         <Link href={`/products/${food.id}`} className=' text-gray-1'  >
             <Image
                 className='flex-1 object-cover group-hover:scale-105 catalogue-display-item-shadow mb-4 mx-auto' 

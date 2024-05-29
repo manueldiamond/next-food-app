@@ -1,14 +1,42 @@
 "use client"
 
-import React, { ChangeEvent, ChangeEventHandler, useState } from 'react'
+import { useObjectState } from '@/libs/Hooks'
+import React, { ChangeEvent, ChangeEventHandler, forwardRef, useEffect, useState } from 'react'
 
-const Slider = ({label="slider",minText="Min", maxText="Max",defaultValue=50}) => {
-    const [value,setValue]=useState(defaultValue)
-    const handleChange=(event:ChangeEvent<HTMLInputElement>)=>setValue(Number(event.target.value))
-    
+type sliderProps={
+    ref?:React.MutableRefObject<string>,
+    label?:string,
+    ranges:string[]
+    minText:string
+    maxText:string,
+    defaultValue:number,
+    onChange:(newVal:string)=>void;
+}
+
+const Slider = (({ onChange,label=undefined,ranges=["low","medium","High"],minText="Min", maxText="Max",defaultValue=50}:Partial<sliderProps>) => {
+    const getLabelTagAt=(val:number)=>{
+        const r = Math.round((val/100)*(ranges.length-1))
+        return `${ranges[r]}${label?("-"+label):""}`
+    }
+    const [state,setState]=useObjectState({value:defaultValue,labelTag:getLabelTagAt(defaultValue)})
+    const {value,labelTag}=state
+
+    useEffect(()=>{
+        onChange&&onChange(labelTag)
+    },[labelTag])
+
+    const handleChange=(event:ChangeEvent<HTMLInputElement>)=>{
+        const value=Number(event.target.value)
+        setState({
+            value,
+            labelTag:getLabelTagAt(value)
+        })
+
+    }
+    const [text,setText]=useState(label)
     return (
     <div className=' flex flex-col w-min min-w-[165px]'>
-        <p className='text-gray-1'>{label}</p>
+        <p className='text-gray-1'>{labelTag}</p>
         <div className=' relative centered'>
             <input
                 type="range"
@@ -35,6 +63,6 @@ const Slider = ({label="slider",minText="Min", maxText="Max",defaultValue=50}) =
 
     </div>
   )
-}
+})
 
 export default Slider

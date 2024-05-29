@@ -6,7 +6,6 @@ import React, { ReactNode } from 'react'
 
 const layout = async({children}:{children:ReactNode}) => {
     const session = await auth()
-    console.log(session)
     if (session?.user?.id){
         redirect("/")
     }

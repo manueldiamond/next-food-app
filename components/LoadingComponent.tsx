@@ -11,7 +11,7 @@ type loadingComponentProps={
   roller?:boolean
 }
 const LoadingComponent = ({error=undefined,roller=false,loading,children,Element}:loadingComponentProps) => {
-  
+  // if(error) throw new Error("Unable to Load")
   return (
     <>
      {loading?<Spinner buffering={!roller} className="text-gray-3"/>

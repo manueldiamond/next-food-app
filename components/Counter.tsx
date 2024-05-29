@@ -1,10 +1,21 @@
 "use client"
-import React, { useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 
-const Counter = ({label="Count",defaultValue=1,min=1,max=99}) => {
+type counterProps={
+    label?:string;
+    onChange?:(newValue:number)=>void;
+    defaultValue?:number;
+    min?:number;
+    max?:number;
+}
+
+const Counter = ({label="Count",onChange,defaultValue=1,min=1,max=99}:counterProps) => {
     const [count,setCount]=useState(defaultValue)
     const addCount=(amt:number)=>setCount(prevCount=>(count>min||amt>0 )&&(count<max||amt<0)?(prevCount+amt):prevCount)
-  return (
+    useEffect(()=>{
+        onChange&&onChange(count)
+    },[count])
+    return (
     <div>
         <p className='text-gray-1'>{label}</p>
         <div className='flex pt-1 gap-2 items-center min-w-[121px] text-white'>
