@@ -25,7 +25,6 @@ export const metadata: Metadata = {
   description: "Order food around Central Campus online and have it delivered right to your doorstep!",
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -38,8 +38,8 @@ export const addUserToDb=async(email:string,hashedPass:string,name:string)=>tryC
             (${email.toLowerCase()},${name},${hashedPass});`
 })
 
-export const getFoods=async(id:string="",filters:Partial<{search:string,category:string}>)=>tryCatchConnectionErr(async()=>{
-    
+export const getFoods=async(id:string|undefined="",filters:Partial<{search:string,category:string}>)=>tryCatchConnectionErr(async()=>{
+    if (id==="undefined")   id=undefined
     const {search,category}=filters
     const params=[]
    
