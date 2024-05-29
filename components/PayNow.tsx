@@ -1,28 +1,14 @@
 "use client"
 import { Session, User } from 'next-auth'
 import { useRouter } from 'next/navigation'
+import { config } from 'process'
 import { MutableRefObject, forwardRef, useRef, useState } from 'react'
-import { usePaystackPayment } from 'react-paystack'
+import { PaystackButton, usePaystackPayment } from 'react-paystack'
 import { HookConfig } from 'react-paystack/dist/types'
 
 type payNowProps={
     user:User,
     amount:number
-}
-
-
-const usePay=(name:string,email:string,amount:number,onClose?:(()=>void),onSuccess?:(()=>void))=>{
-  const spaceIndex=name.indexOf(" ")
-  const firstname = name.slice(0,spaceIndex&&spaceIndex)
-  const lastname = name.slice(spaceIndex&&spaceIndex)
-  const usePaystackCongig:HookConfig =  {firstname,lastname,currency:"GHS",email,publicKey:process.env.NEXT_PUBLIC_PAYSTACK_TEST_KEY!,amount}
-  // console.log(usePaystackCongig)
-  const initialize = usePaystackPayment(usePaystackCongig)
-  // const [success,useState,]
-  const pay=()=>{
-    initialize({onClose,onSuccess})
-  }
-  return pay
 }
 
 //this is a hacky solution just so i get it done fast.. 
@@ -64,12 +50,15 @@ const SuccessModal=({
 
 const PayNow = ({user,amount}:payNowProps) => {
   const {email,name} = user
+  const spaceIndex=name!.indexOf(" ")
+  const firstname = name!.slice(0,spaceIndex&&spaceIndex)
+  const lastname = name!.slice(spaceIndex&&spaceIndex)
+  
   const modalControls=useModal()
   
   const paymentSuccess=()=>modalControls.open()
   const paymentCancelled=()=>modalControls.open()//DebugTesting
 
-  const pay = usePay(name!,email!,amount,paymentCancelled,paymentSuccess)
   return (
     <div className='flex justify-between items-center'>
       <SuccessModal {...modalControls} />
@@ -78,7 +67,19 @@ const PayNow = ({user,amount}:payNowProps) => {
             <p className='text-base text-gray-3'>Total price</p>
             <p className='text-black font-semibold text-[2rem]'>GH₵ {amount}</p>
         </div>
-        <button onClick={pay} className='dark-button  max-w-[13.0625rem] min-h-[4.375rem]'>Pay Now</button>
+        <PaystackButton 
+          className='button dark-button   max-w-[13.0625rem] min-h-[4.375rem]'
+          text='Pay Now'
+          amount={amount}
+          email={email!}
+          currency='GHS'
+          publicKey={process.env.NEXT_PUBLIC_PAYSTACK_TEST_KEY!}
+          onSuccess={paymentSuccess}
+          onClose={paymentCancelled}
+          firstname={firstname}
+          lastname={lastname}
+        />
+        
     </div>
   )
 }

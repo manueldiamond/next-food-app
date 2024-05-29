@@ -22,7 +22,7 @@ const page = async ({searchParams:{item,amount=1,name:itemTag=""}}:{searchParams
   }
   if (itemTag)  itemTag=`${itemTag[0].toUpperCase()}${itemTag.slice(1).toLowerCase()} `
   const Orderprice  = foodInfo.price*amount
-  const tax = Orderprice*.1 //we're just gonna assume MOMO charges is 10%... Compute real value later
+  const tax = Math.round(((Orderprice*.01) + Number.EPSILON) * 100) / 100 //we're just gonna assume MOMO charges is 1%... Compute real value later
   const orderSummary = [
     {name:itemTag+foodInfo.name, count:amount,main:true},
     {name:'Order', amt:Orderprice},
