@@ -10,7 +10,7 @@ import Form from './Form';
 import Spinner from './Spinner';
 import ErrorText from './ErrorText';
 import LoadingComponent from './LoadingComponent';
-import ListedProduct from './FavouritesItem';
+import ListedProduct from './ListedProduct';
 import SearchFilters from '@/components/CatalogueSearchFilters';
 import PayNow from './PayNow';
 import { ProductOrderButtons } from './ProductOrderButtons';
@@ -21,5 +21,5 @@ export{
     SignInWIthGoogleButton,
     Spinner,ErrorText,LoadingComponent,
     ListedProduct,SearchFilters,
-    PayNow,ProductOrderButtons
+    PayNow,ProductOrderButtons,
 }

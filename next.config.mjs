@@ -14,23 +14,7 @@ const nextConfig = {
                 }       
                ]
         },
-        // I saw this online on stack... 
-        async rewrites() {
-                return [
-                  {
-                    source: '/api/:path*',
-                    destination: 'https://api.paystack.co/:path*',
-                  },
-                ]
-              },
-        // I'm thinking it should look like this:       
-        headers:[
-                {
-                 // 
-                 // source:
-                 // some headers congig shii..
-                }
-        ] ,
+        
 
         experimental:{
                 serverActions:{

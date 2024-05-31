@@ -2,6 +2,7 @@ import { FoodType } from '@/libs/types';
 import Image from 'next/image';
 import Link from 'next/link'
 import FavouriteButton from './FavouriteButton';
+import EditIcon from './EditIcon';
 
 
 
@@ -16,7 +17,7 @@ const ListedProduct=(
 )=>{
     if(!key) key=food.id
     return( 
-    <div  key={food.id} className=' rounded-[20px] centered w-full min-w-[225px] min-h-[185px] transition scale-up-animation group hover:shadow-xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
+    <div  key={food.id}  className='relative rounded-[20px] centered w-full min-w-[225px] min-h-[185px] transition scale-up-animation group hover:shadow-xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
         <Link href={`/products/${food.id}`} className='flex centered flex-1'>
             <div className=' text-gray-1'  >
                 <Image
@@ -34,7 +35,7 @@ const ListedProduct=(
                 <p className='ml-2 text-gray-3'>From {food.vendor}</p>
             </div>
         </Link>
-
+        <EditIcon id={food.id} />
         <div className='rating_and_favourite bottom flex-col flex h-full justify-between items-center '>
             <div className='rating flex gap-1 items-center'> 
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,6 +44,7 @@ const ListedProduct=(
 
                 <span>{food.rating}</span>
             </div>
+            
             <FavouriteButton 
                 className={"h-[2rem] aspect-square"}
                 userid={userid}

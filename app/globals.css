@@ -49,7 +49,7 @@ h1,h2,h3,h4,h5,h6,.heading{
 }
 
 .catalogue-display-item-shadow{
-  @apply group-hover:drop-shadow-[0_15px_15px_rgba(0,0,0,.25)]
+  @apply drop-shadow-[0_15px_9px_rgba(0,0,0,.25)] group-hover:drop-shadow-[0_15px_15px_rgba(0,0,0,.35)]
 }
 
 .animate-opacity{
@@ -127,4 +127,7 @@ button,.button,.click-scale, button:not(.no-scale,.ns){
 }
 .hollow-dark-button{
   @apply w-full click-scale rounded-20 border-solid border-[3px] text-gray-1 centered gap-5 bg-transparent border-gray-1 
+}
+.product-shadow{
+  @apply drop-shadow-[0_40px_20px_rgba(0,0,0,.7)]
 }

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import FavouriteButton from './FavouriteButton';
+import EditIcon from './EditIcon';
 
 
 type catalogueItemProps={
@@ -38,7 +39,7 @@ const CatalogueItem=(
         
         </Link>
 
-        <div className='rating_and_favourite bottom flex justify-between items-center w-full pt-2'>
+        <div className='rating_and_favourite relative bottom flex justify-between items-center w-full pt-2'>
             <div className='rating flex gap-1 items-center'>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.9782 15.5435L8.00016 11.8848L3.02216 15.5435L4.93349 9.63479L-0.0418396 5.99945H6.10083L8.00016 0.0807877L9.89949 5.99945H16.0415L11.0668 9.63479L12.9782 15.5435Z" fill="#FF9633"/>
@@ -47,6 +48,7 @@ const CatalogueItem=(
                 <span>{food.rating}</span>
             </div>
             {userid&&<FavouriteButton className='w-8' foodid={food.id} defaultValue={food.favourite} userid={userid!}/>}
+            <EditIcon id={food.id} />
         </div>
     </div>
     )

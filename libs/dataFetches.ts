@@ -21,13 +21,35 @@ export const useCatalogueItems=(id?:string)=>{
 
     let url=`/api/get-foods?id=${id}&filters=${filter}`
 
-   const result = useSWR(url,fetcher)
-    console.log("FOODS",result.data?.foods)
+   const result = useSWR(url,fetcher,{revalidateOnFocus:false,refreshWhenHidden:false})
    return {...result,foods:result.data?.foods as FoodType[],setFilter,activeFilter:filter}
 }
 
+export const useProductdData=(id?:string)=>{
+    if(!id){
+        return {
+            isLoading:false,
+            error:"",
+            mutate:()=>{},
+            data:{
+                description:"",
+                id:"",
+                img:"/some-ham.png",
+                preptime:"",
+                name:"Burger",
+                price:0,
+                rating:0,
+                vendor:"Vendor A",            
+        } as FoodType}
+    }
+   let url=`/api/get-food-by-id/${id}`
+
+   const result = useSWR(url,fetcher,{revalidateOnFocus:false,refreshWhenHidden:false})
+   return {...result,data:result.data?.data as FoodType}
+}
+
 export const useGetUserData=(id:string)=>{    
-    const result = useSWR(`/api/get-user-data?id=${id}`,fetcher)
+    const result = useSWR(`/api/get-user-data?id=${id}`,fetcher,{revalidateOnFocus:false,refreshWhenHidden:false})
     return {...result,data:result.data?.data as userDataType}
     
 }

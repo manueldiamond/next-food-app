@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 import { Session } from 'next-auth';
 import { auth } from '@/auth'
+import EditIcon from '@/components/EditIcon'
 
 
 type staticParamsPropsType={
@@ -19,18 +20,23 @@ type staticParamsPropsType={
 }
 
 const page = async({params}:staticParamsPropsType) => {
+  
   const data = await getProductData(params.id)
   const session=await auth()
+
   if(!data)
     throw new Error("Oops, The product youre looking for, appears to be missing")
-  
+
   return(
     <>
     <main className='container flex flex-col h-full pb-8'>
-      <Image className='mx-auto' src={data.img} width={350} height={350} alt={"product image"}/>
+      <Image className='mx-auto product-shadow' src={data.img} width={350} height={350} alt={"product image"}/>
       <div className=' flex justify-between max-h-min items-center'>
         <h3 className='text-2xl mt-5 font-semibold text-gray-1'>{data.name}</h3>
         <FavouriteButton className='size-8' foodid={data.id} userid={session?.user?.id!} defaultValue={data.favourite}/>
+      </div>
+      <div className='relative w-full'>
+        <EditIcon id={data.id}/>
       </div>
       <div className='flex items-center py-4 rating__and__time'>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

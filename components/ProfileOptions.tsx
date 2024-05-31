@@ -123,7 +123,7 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
 
   let {isLoading,data,error,mutate}=useGetUserData(user?.id!)
 
-  const {changePhoto,loading:imgLoading,getPublicUrl:getImagePublicUrl,selectedPhoto,FileInputHelper}=useImageUpload()
+  const {changePhoto,loading:imgLoading,getPublicUrl:getImagePublicUrl,selectedPhoto,FileInputHelper}=useImageUpload()()
   const editedUser={...user,image:selectedPhoto.url?selectedPhoto.url:user?.image} as  User
   
   const depenencyArr=[editing,isLoading,...(!data?[0,0,0]:[data.name,data.deliveryaddress,data.profileimage])];

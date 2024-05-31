@@ -1,4 +1,5 @@
 import { type } from 'os';
+import { HTMLInputTypeAttribute } from 'react';
 import { string } from 'zod';
 
 
@@ -39,12 +40,16 @@ export type FoodType={
 export type formInput={
     label?:string
     name:string
-    type:string
+    type?:HTMLInputTypeAttribute
     placeholder?:string,
     required?:boolean,
+    
     disabled?:boolean,
     defaultValue?:any,
-}
+}&Partial<{
+    height:number,
+    maxLength:number
+}>
 
 export class CustomError extends Error{}
 export class LoginError extends CustomError{

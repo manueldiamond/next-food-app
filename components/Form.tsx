@@ -1,12 +1,10 @@
 "use client"
 import { formInput } from '@/libs/types'
-import { type } from 'os'
-import React, { useState } from 'react'
+import React, { ForwardedRef, MutableRefObject, ReactNode, forwardRef ,useCallback,useMemo,useRef,useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import TextInput from './TextInput'
 import { Spinner } from '.'
 import { useObjectState } from '@/libs/Hooks'
-import { error } from 'console';
 
 type formControlsType={
     errorInputs:string[],
@@ -32,6 +30,7 @@ type FormChildrenProps={
     submitText?:string;
     onChange:(name:string,value:any)=>void;
     inputsArray:formInput[]
+    children?:ReactNode
 }
 
 const FormChildren=({
@@ -40,6 +39,7 @@ const FormChildren=({
     inputsArray,
     errorCheck,
     onChange ,
+    children
 }:FormChildrenProps)=>{
     const {pending}=useFormStatus()
     return(
@@ -57,6 +57,7 @@ const FormChildren=({
                 />
             )}
             </div>
+            {children}
            {submitText&&
                 <button 
                     type='submit' 
@@ -74,7 +75,7 @@ const FormChildren=({
 
 export const useForm=()=>{
     const [msg,setMsg]=useObjectState({error:"",good:""})
-
+    
     const [errorInputs,setErroredInputs] = useState<string[]>([])
     const setErrorMsg=(tex:string)=>setMsg({error:tex})
     const setGoodMsg=(tex:string)=>setMsg({good:tex})
@@ -107,19 +108,23 @@ function Form({
     clearErrors=()=>{}
 }:formProps){
     const isErr=(inputName:string)=>errorInputs.includes(inputName)
-
+    const formref = useRef<HTMLFormElement>(null)
     const onFormValueChanged=(name:string,value:string)=>{
         if(isErr(name)||name==='submit'){
             clearErrors()
         }
     }
-        
+     
      const action=async(formData:FormData)=>{
         clearErrors()
-        await submitAction(formData)
+        const r =  await submitAction(formData)
+        if (typeof r === 'boolean' && r){
+            formref.current?.reset()
+            // formref.current?.
+        }
      }
   return (
-    <form action={action} className={'w-full mt-40 container pb-8 '+className}>
+    <form ref={formref} action={action} className={'w-full mt-40 container pb-8 '+className}>
             {heading&&<h1 className=' text-center mx-auto text-2xl font-bold'>
                 {heading}
             </h1>}
@@ -131,10 +136,39 @@ function Form({
                 onChange={onFormValueChanged} 
                 inputsArray={inputsArray!} 
                 submitText={submitText}
-            />
-        {children}
+            >
+                {children}
+            </FormChildren>
+
     </form>
   )
 }
 
 export default Form
+type formPropsWithoutContols={
+    gap?:number
+    className?:string,
+    error?:string,
+    submitText?:string;
+    heading?:string|null,
+    children?:React.ReactNode
+    inputsArray:formInput[],
+    submitAction:(formData:FormData)=>any
+}
+const usedForm=(props:formPropsWithoutContols,ref:any)=>{
+    const useFormControls = useForm()
+    if(ref) 
+        ref.current=useFormControls
+    return(
+        <Form {...props}  {...useFormControls.controls}/>
+    )
+   
+}
+export const RefForm = forwardRef(usedForm)
+
+export const useFormRef=(props:formPropsWithoutContols,deps:any[]=[])=>{
+    const ref = useRef<ReturnType<typeof useForm>>(null)
+    const refForm = useCallback(({children}:{children?:ReactNode})=>(<RefForm ref={ref} {...props} children={children} />) ,[ref,...deps])
+
+    return {ref,refForm}
+}

@@ -1,4 +1,4 @@
-import { ZodError, object, string } from "zod"
+import { ZodError, number, object, string } from "zod"
  
 export const signInSchema = object({
   email: string({ required_error: "Email is required" })
@@ -27,3 +27,13 @@ export const parseZodError=(err:ZodError)=>({
   message:err.errors.map((zoderr)=>zoderr.message).join("\n"),
   paths:err.errors.map(zoderr=>zoderr.path[0] as string)
 })
+
+
+export const foodSchema = object({
+  name: string(), // Required
+  vendor: string().nullable(), // Nullable field
+description:string(), // Required
+  preptime: string().nullable(), // Nullable field
+  rating: number().positive().min(0).max(5), // Number field, required
+  price: number().positive(), // Number field, required
+});

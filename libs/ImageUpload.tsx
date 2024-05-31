@@ -1,11 +1,14 @@
-import { ChangeEvent, useRef, useState } from "react"
+import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react"
 import { json } from "stream/consumers"
 import { fileURLToPath } from "url"
+import { useObjectState } from "./Hooks"
+import loading from '../app/loading';
 
-export const useImageUpload=()=>{
+export const useImageUpload=(deps:any[]=[])=>useCallback(()=>{
     const pictureInput=useRef<HTMLInputElement|null>(null)
-    const [selectedPhoto,setSelectedPhoto]=useState<{url:string|null,buffer:any,uploaded?:string|undefined}>({url:null,buffer:null})
-    const [loading,setLoading]=useState(false)
+    const [selectedPhoto,setSelectedPhoto]=useObjectState<{url:string|null,buffer:any,uploaded?:string|undefined,loading:boolean}>({url:null,buffer:null,loading:false})
+    const setLoading=(loading:boolean)=>setSelectedPhoto({loading})
+    
     const changePhoto=()=>{
       // console.log("CLICKE")
       if(pictureInput.current){
@@ -23,7 +26,6 @@ export const useImageUpload=()=>{
           const b64 = e.target!.result as string;
           // const data=pako.deflate(b64,{level:0})
           setSelectedPhoto({ url:URL.createObjectURL(file),buffer:b64,uploaded:undefined})
-      
       };
       reader.readAsDataURL(file)
     }
@@ -32,7 +34,9 @@ export const useImageUpload=()=>{
       if (selectedPhoto.uploaded)
         return {url:selectedPhoto.uploaded}
       setLoading(true)
+      console.log("starting post",selectedPhoto)
       if(selectedPhoto.buffer){
+        console.log("posting")
         const res=await fetch("/api/cloud/upload-image",{
           method:"POST",
           headers: { 'Content-Type': 'application/json' },
@@ -45,17 +49,15 @@ export const useImageUpload=()=>{
           setLoading(false)
           return {error:"Error, unable to upload photo"}
         }
-        setSelectedPhoto(prev=>({...prev,uploaded:url}))
-  
-        setLoading(false)
+        setSelectedPhoto({uploaded:url,loading:false})
 
         return {url}
       }
       
     }
     
-    const FileInputHelper=()=>(
+    const FileInputHelper=useCallback(()=>(
       <input ref={pictureInput} hidden accept="image/*" onChange={pictureChanged} type='file'className='hidden invisible'/>
-    )
-    return {FileInputHelper,loading,getPublicUrl:upload,selectedPhoto,changePhoto}
-  }
+    ),[pictureInput,pictureChanged])
+    return {FileInputHelper,loading:selectedPhoto.loading,getPublicUrl:upload,selectedPhoto,changePhoto}
+  },deps)

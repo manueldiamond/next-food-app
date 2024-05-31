@@ -1,4 +1,3 @@
-import { number, string } from 'zod';
 "use server"
 
 import { ConnectionError, FoodType, userDataType, userWithPass } from "@/libs/types"
@@ -37,6 +36,7 @@ export const addUserToDb=async(email:string,hashedPass:string,name:string)=>tryC
 
 export const getFoods=async(id:string|undefined="",filters:Partial<{search:string,category:string}>)=>tryCatchConnectionErr(async()=>{
     if (id==="undefined")   id=undefined
+    
     const {search,category}=filters
     const params=[]
    
@@ -137,4 +137,51 @@ export const getFoodPriceFromDB =async(foodId:string)=>tryCatchConnectionErr(asy
     const {rows}=await sql`select name , price from food where id=${foodId} limit 1`
     if (rows.length>0)
         return rows[0] as {name:string,price: number}
+})
+
+//GPT smartt.!!
+export const addFoodToDB = async (food: Partial<Omit<FoodType, 'id'>>) => tryCatchConnectionErr(async () => {
+    const columns: string[] = [];
+    const values: any[] = [];
+    const params: string[] = [];
+    
+    Object.keys(food).forEach((key ) => {
+      const value = food[key as keyof Omit<FoodType, 'id'>]
+      if (value !== undefined) {
+        columns.push(key);
+        values.push(value);
+        params.push(`$${values.length}`);
+      }
+    })
+  
+    // Construct the query by progressively adding parameters
+    
+  
+    if (columns.length === 0) {
+      throw new Error('No valid fields to insert');
+    }
+  
+    const query = `
+      INSERT INTO food (${columns.join(', ')})
+      VALUES (${params.join(', ')})
+    `;
+  
+    await sql.query(query, values);
+  
+  });
+
+
+export const foodExists = async (foodname:string,foodvendor:string|null|undefined) => tryCatchConnectionErr(async () => {
+    const {rows} = await sql`select exists( select 1 from food where name=${foodname} and vendor=${foodvendor}) as "exists"`
+    if (rows.length>0)
+        return rows[0].exists
+})
+
+export const deleteFoodFromDB =  async (foodid:string) => tryCatchConnectionErr(async () => {
+    const { rowCount } = await sql`DELETE FROM food WHERE id = ${foodid}`;
+    if (rowCount === 0) {
+      return {error:(`No food item found with id: ${foodid}`)}
+    }
+    return { message: `Food item with id ${foodid} has been deleted` };
+ 
 })
