@@ -40,7 +40,7 @@ const page = ({params}:{params:{id?:string}}) => {
     const id = params.id
     const editing=id!=="new"
     let inputsArray=SCEHEMA
-    const {data,mutate,isLoading,error} = useProductdData(id)
+    const {data,mutate,isLoading,error} = useProductdData(editing?id:undefined)
     
     let defaultImageURL = "/some-ham.png"
     
@@ -60,8 +60,8 @@ const page = ({params}:{params:{id?:string}}) => {
     const {ref:formRef,refForm:Form} = useFormRef({
         inputsArray,
         submitAction:addProduct,
-        submitText:"Add Product",
-        heading:"Add New Food",
+        submitText:editing?"Add Product":"Update Product",
+        heading:editing?"Edit Product Details":"Add New Food",
     },[addProduct])
 
     const router = useRouter()
@@ -117,9 +117,9 @@ const page = ({params}:{params:{id?:string}}) => {
     <div className='centered flex-col'>
        <LoadingComponent loading={isLoading} error={error} >
        { data&&<>
-            <button onClick={changePhoto} className='!hover:border-[3px] !border-[1px] !border-white centered !overflow-visible  hollow-accent-button max-w-[300px] max-sm:w-full aspect-square flex '>
+            <button onClick={changePhoto} className='!hover:border-[3px] !border-[1px] !border-black/5 centered !overflow-visible  hollow-accent-button max-w-[380px] max-sm:w-full aspect-square flex '>
                 <Image 
-                    className='product-shadow shadow-black/60 mx-auto flex object-fill w-full ' 
+                    className=' product-shadow shadow-black/60 mx-auto flex object-fill w-full ' 
                     src={productImageUrl?productImageUrl:defaultImageURL} 
                     width={350} 
                     height={350} 
@@ -127,10 +127,10 @@ const page = ({params}:{params:{id?:string}}) => {
                     />
                 <FileInputHelper/>
             </button>
-            <button title='Only click this if the upload is not working well' onClick={getPublicUrl}>Force UPLOAD</button>
+            {/* <button title='Only click this if the upload is not working well' onClick={getPublicUrl}>Force UPLOAD</button> */}
             <Form>
             </Form>
-            <button onClick={deleteProduct} className=' !my-8 !w-max mx-auto !text-red-700 hollow-dark-button'>DELETE PRODUCT</button>
+            {editing&&<button onClick={deleteProduct} className='!mb-16 my-8 !w-max mx-auto !text-red-700 hollow-dark-button'>DELETE PRODUCT</button>}
         </>}
         </LoadingComponent>
     </div>
