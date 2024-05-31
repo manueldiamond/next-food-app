@@ -30,10 +30,10 @@ export const parseZodError=(err:ZodError)=>({
 
 
 export const foodSchema = object({
-  name: string(), // Required
+  name: string().max(32, "Name must be less than 32 characters"), // Required
   vendor: string().nullable(), // Nullable field
-description:string(), // Required
+description:string().max(2500,"Description must be less than or equal to 2500 characters"), // Required
   preptime: string().nullable(), // Nullable field
-  rating: number().positive().min(0).max(5), // Number field, required
-  price: number().positive(), // Number field, required
+  rating: number().positive().min(0).max(5,"Ratings must be less than or equal to 5"), // Number field, required
+  price: number().positive("Price must be a positive number"), // Number field, required
 });

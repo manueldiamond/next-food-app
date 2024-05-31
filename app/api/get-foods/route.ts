@@ -1,7 +1,7 @@
 import { getFoods } from '@/utils/db';
 import { NextResponse } from 'next/server';
  
-export const revalidate = 25;
+export const revalidate = 45;
 
 export async function GET(request: Request) {
     const {searchParams} = new URL(request.url)

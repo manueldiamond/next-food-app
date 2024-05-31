@@ -1,6 +1,7 @@
 import { getFoodById } from "@/utils/db";
 import { NextResponse } from "next/server";
 
+export const revalidate = 25;
 
 export async function GET (req:Request,{params}:{params:{id:string}}) {
     const {id}=params
