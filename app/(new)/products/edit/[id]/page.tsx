@@ -10,6 +10,8 @@ import { foodSchema, parseZodError } from '@/libs/zod';
 import { addFoodToDB, removeProduct } from '@/actions/addAction';
 import { useProductdData } from '@/libs/dataFetches';
 import { useRouter } from 'next/navigation';
+import { updateFoodInDB } from '../../../../../actions/addAction';
+import { useForm } from '../../../../../components/Form';
 
 
 type addProductsFormInput=Omit<formInput,'name'>&{
@@ -57,20 +59,15 @@ const page = ({params}:{params:{id?:string}}) => {
     
     const {FileInputHelper,changePhoto,getPublicUrl,loading,selectedPhoto:{url:productImageUrl}} = useImageUpload()()
     
-    const {ref:formRef,refForm:Form} = useFormRef({
-        inputsArray,
-        submitAction:addProduct,
-        submitText:editing?"Add Product":"Update Product",
-        heading:editing?"Edit Product Details":"Add New Food",
-    },[addProduct])
+    const {controls:formControls,setErrorMsg,setGoodMsg,setErrored} = useForm()
 
     const router = useRouter()
     async function deleteProduct() {
-        const result = await removeProduct(data.id)
+        const result = await (removeProduct(data.id))
         const {error}=result
 
         if(error)
-            formRef.current?.setErrorMsg(error)
+             setErrorMsg(error)
         else
            {    alert("DELETED")
                  router.replace("/products/edit/new")
@@ -94,7 +91,7 @@ const page = ({params}:{params:{id?:string}}) => {
             const result = await getPublicUrl()
             console.log(result)
             if(!result?.url){
-                formRef.current?.setErrorMsg("Image upload failed")
+                 setErrorMsg("Image upload failed")
                 return;
             }
             data.img=(result.url)
@@ -103,14 +100,16 @@ const page = ({params}:{params:{id?:string}}) => {
 
         }
            
-        const res=await addFoodToDB(data)
+        const res=await (editing?updateFoodInDB(id,data):addFoodToDB(data))
+
         if (res?.error){
-            formRef.current?.setErrorMsg(res.error)
+             setErrorMsg(res.error)
             if(res.errorPaths)
-            formRef.current?.setErrored(res.errorPaths)
+             setErrored(res.errorPaths)
             return
         }
-        formRef.current?.setGoodMsg(data.name +" Successfully Added.")
+        if(editing) mutate({data})
+         setGoodMsg("Product "+ data.name +editing?"Sucesssfully Updated":" Successfully Added.")
         return true
     }
   return (
@@ -119,7 +118,7 @@ const page = ({params}:{params:{id?:string}}) => {
        { data&&<>
             <button onClick={changePhoto} className='!hover:border-[3px] !border-[1px] !border-black/5 centered !overflow-visible  hollow-accent-button max-w-[380px] max-sm:w-full aspect-square flex '>
                 <Image 
-                    className=' product-shadow shadow-black/60 mx-auto flex object-fill w-full ' 
+                    className=' product-shadow shadow-black/60 mx-auto flex object-contain w-full ' 
                     src={productImageUrl?productImageUrl:defaultImageURL} 
                     width={350} 
                     height={350} 
@@ -128,8 +127,13 @@ const page = ({params}:{params:{id?:string}}) => {
                 <FileInputHelper/>
             </button>
             {/* <button title='Only click this if the upload is not working well' onClick={getPublicUrl}>Force UPLOAD</button> */}
-            <Form>
-            </Form>
+            <Form
+                 inputsArray = {inputsArray}
+                 submitAction = {addProduct}
+                 submitText={editing?"Update Product":"Add Product"}
+                 heading={editing?"Edit Product Details":"Add New Food"}
+                {...formControls}
+            />
             {editing&&<button onClick={deleteProduct} className='!mb-16 my-8 !w-max mx-auto !text-red-700 hollow-dark-button'>DELETE PRODUCT</button>}
         </>}
         </LoadingComponent>

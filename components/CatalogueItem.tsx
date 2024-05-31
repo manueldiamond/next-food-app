@@ -24,10 +24,10 @@ const CatalogueItem=(
         {
             animationDelay:`${index*.2}s`
         }
-    } key={food.id} className='flex flex-col rounded-[20px] w-[225px] min-h-[185px] transition scale-up-animation group hover:scale-105 hover:shadow-2xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
+    } key={food.id} className='flex flex-col rounded-[20px] w-[225px] h-max min-h-[185px] transition scale-up-animation group hover:scale-105 hover:shadow-2xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
         <Link href={`/products/${food.id}`} className=' text-gray-1'  >
             <Image
-                className='flex-1 object-cover group-hover:scale-105 catalogue-display-item-shadow mb-4 mx-auto' 
+                className='flex-1 object-contain group-hover:scale-105 w-[120px] aspect-square centered catalogue-display-item-shadow mb-4 mx-auto' 
                 src={food.img}
                 width={120}
                 height={120}
@@ -38,7 +38,7 @@ const CatalogueItem=(
             <p className='-my-1'>{food.vendor}</p>
         
         </Link>
-
+        <div className='flex-1'/>
         <div className='rating_and_favourite relative bottom flex justify-between items-center w-full pt-2'>
             <div className='rating flex gap-1 items-center'>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

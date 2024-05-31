@@ -9,11 +9,11 @@ export default function Layout({
     children: React.ReactNode;
   }>) {
     return (
-    <SessionProvider>
+    <div className='min-h-screen flex flex-col'>
+      <SessionProvider>
         <HeaderControls/>
-        <div className=''>
           {children}
-        </div>
-    </SessionProvider>
+     </SessionProvider>
+    </div>
     );
   }

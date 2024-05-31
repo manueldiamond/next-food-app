@@ -10,7 +10,7 @@ const tryCatchConnectionErr=async<T>(tryFunction:()=>T)=>{
         const result = await tryFunction()
         return result
     }catch(e){
-        e instanceof Error&&console.error("EE",e.message)
+        console.error("EE",e instanceof Error?e.message:e)
         throw new ConnectionError()
     }
 }
@@ -170,6 +170,33 @@ export const addFoodToDB = async (food: Partial<Omit<FoodType, 'id'>>) => tryCat
   
   });
 
+  export const updateFoodInDB = async (foodid:string,food: Partial<Omit<FoodType, 'id'>>) => tryCatchConnectionErr(async () => {
+    const columns: string[] = [];
+    const values: any[] = [foodid];
+    
+    Object.keys(food).forEach((key) => {
+      if (key !== 'id') {
+        const value = food[key as keyof Omit<FoodType, 'id'>];
+        if (value !== undefined) {
+          columns.push(`${key} = $${columns.length + 2}`);
+          values.push(value);
+        }
+      }
+    });
+  
+    if (columns.length === 0) {
+      throw new Error('No valid fields to update');
+    }
+  
+    const query = `
+      UPDATE food
+      SET ${columns.join(', ')}
+      WHERE id = $1
+    `;
+  
+    await sql.query(query, values);
+  });
+  
 
 export const foodExists = async (foodname:string,foodvendor:string|null|undefined) => tryCatchConnectionErr(async () => {
     const {rows} = await sql`select exists( select 1 from food where name=${foodname} and vendor=${foodvendor}) as "exists"`

@@ -16,7 +16,8 @@ export const ProductOrderButtons = ({data}:{data:FoodType}) => {
     }
   return (
     <>
-        <div className='flex py-5 justify-between'>
+        <div className='flex h-full py-5 justify-between'>
+
             {/* TODO:set the spicy range from DB */}
         <Slider onChange={(slider)=>setState({slider})} ranges={["no-spice","low-spice","mid-spicy","very-spicy","extra-spicy"]}/> 
         <Counter onChange={(count)=>setState({count})} label='Portion'/>
