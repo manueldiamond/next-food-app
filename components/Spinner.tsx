@@ -5,7 +5,7 @@ const Spinner = ({className="",buffering=false}) => {
     <div className={className+" flex justify-center items-center color-white "}>
       {/* <div className="animate-spin  rounded-full  flex min-w-7  aspect-square border-t-4 border-r-4 border-current"></div> */}
       {buffering?
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24">
         <defs>
           <filter id="svgSpinnersGooeyBalls10">
             <feGaussianBlur in="SourceGraphic" result="y" stdDeviation={1.5}></feGaussianBlur>

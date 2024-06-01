@@ -9,7 +9,7 @@ const HeaderControls = () => {
     const router = useRouter()
     const isOnProfilePage=pathname==="/profile"
     const back=()=>router.back()
-    const searchButtonVisible=["/login","/register","payment","search"].findIndex((item)=>pathname.includes(item))===-1
+    const searchButtonVisible=["profile","login","register","payment","search"].findIndex((item)=>pathname.includes(item))===-1
   return (
     <div className={ (isOnProfilePage?" text-white ":" text-gray-1 " )+ 'py-5 container flex justify-between '}>
         <button onClick={back} className='rounded-full click-scale'>

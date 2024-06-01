@@ -36,9 +36,9 @@ const profileDetails=[
   ]
 
 const links=[
-    {title:"Payment Details",path:"payment-details"},
-    {title:"Order History",path:"/logs/order-history"},
-    {title:"Change Password",path:"edit-password"}
+    {title:"Payment Details",path:"/profile/payment-details"},
+    {title:"Order History",path:"/logs"},
+    {title:"Change Password",path:"/profile/change-password"}
 ]
 const FormButton=({editing,edit}:{editing:boolean,edit:()=>void})=>{
   const {pending}= useFormStatus()
@@ -88,7 +88,7 @@ const DetailsForm=({inputfields,editing,edit,saveAction}:any)=>{
         <div className=' text-[#808080] flex flex-col gap-2'>
           <hr className='mx-5 text-[#E8E8E8]'/>
           {links.map(link=>(
-          <Link key={link.path} href={"profile/"+link.path} className=' py-2 hover:text-black flex items-center justify-between group hover:bg-gray-50 rounded-xl px-5'>
+          <Link key={link.path} href={link.path} className=' py-2 hover:text-black flex items-center justify-between group hover:bg-gray-50 rounded-xl px-5'>
               <span>{link.title}</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 group-hover:translate-x-2 transition-transform">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -121,7 +121,7 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
   const params=useSearchParams()
   const editing=Boolean(params.get("editing"))
 
-  let {isLoading,data,error,mutate}=useGetUserData(user?.id!)
+  let {isLoading,data,error,mutate}=useGetUserData()
 
   const {changePhoto,loading:imgLoading,getPublicUrl:getImagePublicUrl,selectedPhoto,FileInputHelper}=useImageUpload()()
   const editedUser={...user,image:selectedPhoto.url?selectedPhoto.url:user?.image} as  User
@@ -157,7 +157,7 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
       name:formData.get('name') as string,
       deliveryaddress:formData.get('deliveryaddress') as string,
       profileimage:imageUrl?imageUrl:user?.image,
-    }
+    } as userDataType
 
     const {error:saveError,errInputs} = await saveUserData(data)
     

@@ -3,12 +3,13 @@ import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { error } from 'console';
 import loading from '../app/loading';
-import { FoodType, userDataType } from '@/libs/types';
+import { FoodType, paymentMethodType, userDataType } from '@/libs/types';
 import { useObjectState } from './Hooks';
 import { useState } from 'react';
+import exp from 'constants';
 
 const fetcher = (input:string | Request | URL, init?: RequestInit | undefined) =>
-     fetch(input,{...init,next:{...init?.next,tags:["fetcher"],revalidate:10}})
+     fetch(input,{...init,next:{...init?.next,tags:["fetcher"],revalidate:20}})
      .then(res =>{
         if(!res.ok)
             throw new Error()
@@ -16,10 +17,10 @@ const fetcher = (input:string | Request | URL, init?: RequestInit | undefined) =
     return res.json()
 })
 
-export const useCatalogueItems=(id?:string)=>{
+export const useCatalogueItems=()=>{
     const [filter,setFilter]=useState<string>("")
 
-    let url=`/api/get-foods?id=${id}&filters=${filter}`
+    let url=`/api/get-foods?filters=${filter}`
 
    const result = useSWR(url,fetcher,{revalidateOnFocus:false,refreshWhenHidden:false})
    return {...result,foods:result.data?.foods as FoodType[],setFilter,activeFilter:filter}
@@ -49,8 +50,14 @@ export const useProductdData=(id?:string)=>{
    return {...result,data:result.data?.data.name?(result.data?.data):defaults as FoodType}
 }
 
-export const useGetUserData=(id:string)=>{    
-    const result = useSWR(`/api/get-user-data?id=${id}`,fetcher,{revalidateOnFocus:false,refreshWhenHidden:false})
+export const useGetUserData=()=>{    
+    const result = useSWR(`/api/get-user-data`,fetcher,{revalidateOnFocus:false,refreshWhenHidden:false})
     return {...result,data:result.data?.data as userDataType}
     
+}
+
+export const usePaymentMethods=()=>{
+    const result = useSWR(`/api/get-user-payment-info`,fetcher,{revalidateOnFocus:false,refreshWhenHidden:false})
+    // if(result.error)  result.error=""
+    return {...result,data:(result.data?.data?result.data?.data:[] )as paymentMethodType[]}
 }

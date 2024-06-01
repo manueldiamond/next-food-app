@@ -37,3 +37,15 @@ description:string().max(2500,"Description must be less than or equal to 2500 ch
   rating: number().positive().min(0).max(5,"Ratings must be less than or equal to 5"), // Number field, required
   price: number().positive("Price must be a positive number"), // Number field, required
 });
+
+export const changePasswordSchema=object({
+  currentPassword:string({ required_error: "Password is required" }),
+  newPassword:string({ required_error: "New Password is required" })
+  .min(6, "Password must be more than 6 characters")
+  .max(32, "Password must be less than 32 characters"),
+  confirmPassword:string({ required_error: "Confirm new Password" })
+  .min(6, "Password must be more than 6 characters")
+}).refine((data)=>data.confirmPassword===data.newPassword,{
+  message:"New Passwords don't Match",
+  path:["confirmPassword"]
+})

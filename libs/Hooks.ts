@@ -71,3 +71,12 @@ export const useIsAdmin=()=>{
     const {data}=useSession()
     return isUserAdmin(data?.user)
 }
+
+export const useModal=()=>{
+    const [open,setOpen]=useState(false)
+    return({
+      open:()=>{setOpen(true)},
+      close:()=>{setOpen(false)},
+      visible:open
+    })
+  }

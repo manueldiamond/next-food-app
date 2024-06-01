@@ -1,3 +1,4 @@
+import exp from 'constants';
 import { type } from 'os';
 import { HTMLInputTypeAttribute } from 'react';
 import { string } from 'zod';
@@ -15,7 +16,6 @@ export type userType = {
 export type userWithPass=userType&{pass:string}
 export type userDataType=userType&{
     deliveryaddress?:string,
-    paymentdetails?:any
 }
 export type authContextType={
     user:userType
@@ -52,6 +52,16 @@ export type formInput={
     maxLength:number
 }>
 
+export type paymentMethodType={
+    
+}
+export type modalProps=Partial<{
+    open:()=>void,
+    close:()=>void,
+    visible:boolean,
+    children:React.ReactNode
+    className:string
+}>
 export class CustomError extends Error{}
 export class LoginError extends CustomError{
     // msg:string

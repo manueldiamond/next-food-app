@@ -12,7 +12,7 @@ import { User } from 'next-auth';
 
 const Catalogue = ({user}:{user?:User}) => {
 
-  const {foods,error,isLoading,activeFilter,setFilter} = useCatalogueItems(user?.id)
+  const {foods,error,isLoading,activeFilter,setFilter} = useCatalogueItems()
 
   return (
     <div className='my-10 w-full'>

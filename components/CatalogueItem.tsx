@@ -14,11 +14,10 @@ type catalogueItemProps={
     food:FoodType,
     user?:User,
     index:number,
-    key:any,
 }
 
 const CatalogueItem=(
-    {food,key,index,user}:catalogueItemProps
+    {food,index,user}:catalogueItemProps
 )=>{
 
     return( 
@@ -26,7 +25,7 @@ const CatalogueItem=(
         {
             animationDelay:`${index*.2}s`
         }
-    } key={food.id} className='flex flex-col h-[16rem] rounded-[20px] md:w-[225px] w-[185px] transition scale-up-animation group hover:scale-105 hover:shadow-2xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
+    } key={food.id} className='flex flex-col md:h-[18rem] h-[16rem] rounded-[20px] md:w-[225px] w-[185px] transition scale-up-animation group hover:scale-105 hover:shadow-2xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
         <Link href={`/products/${food.id}`} className=' text-gray-1 '  >
             <Image
                 className='flex-1 object-contain group-hover:scale-105 w-[120px] aspect-square centered catalogue-display-item-shadow mb-4 mx-auto' 
@@ -36,7 +35,7 @@ const CatalogueItem=(
                 alt={`picture  of ${food.vendor} ${food.name}`} 
             />
             
-            <h6 className='py-0 font-semibold md:text-base text-sm leading-3'>{food.name}</h6>
+            <h6 className='py-0 font-semibold md:text-base text-sm max-sm:leading-4-'>{food.name}</h6>
             <p className='-my-1 md:text-sm text-xs mt-2'>{food.vendor}</p>
         
         </Link>

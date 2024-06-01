@@ -6,7 +6,7 @@ import { FoodType } from '@/libs/types'
 import { useRouter } from 'next/navigation'
 import { useObjectState } from '@/libs/Hooks'
 
-export const ProductOrderButtons = ({data}:{data:FoodType}) => {
+const ProductOrderButtons = ({data}:{data:FoodType}) => {
     const router=useRouter()
     const [state,setState]=useObjectState({count:1,slider:"mid-spicy"})
     const {count,slider}=state
@@ -30,3 +30,5 @@ export const ProductOrderButtons = ({data}:{data:FoodType}) => {
     </>
   )
 }
+
+export default ProductOrderButtons

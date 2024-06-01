@@ -66,7 +66,7 @@ const Footer = () => {
             {footerLinks.map((item,index)=>{
               const current=isCurrentPath(item.link)
               return(
-                <>{(index===Math.floor(footerLinks.length/2))&&<span className='mx-5'/>}
+                <React.Fragment key={"empty-space"}>{(index===Math.floor(footerLinks.length/2))&&<span className='mx-5'/>}
                   <li key={item.link}>
                     <Link href={item.link} className={' md:min-w-6 min-w-3  click-scale rounded-full flex flex-col gap-1 items-center '+(!current&&"hover:opacity-100 opacity-70 aspect-square")}>
                       <Image src={item.icon}
@@ -82,7 +82,7 @@ const Footer = () => {
                       </div>}
                     </Link>
                 </li>
-              </>
+              </React.Fragment>
             )})}
         </ul>
     </footer>

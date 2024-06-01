@@ -19,7 +19,7 @@ const page = async() => {
         <h1 className='text-3xl text-gray-3 pb-6 font-bold'>Favourites</h1>
         <div className='flex flex-wrap gap-3 '>
             {favouriteFoods?favouriteFoods.map((food,i)=>(
-                <FavouritesItem key={food.id} userid={session.user?.id!} food={{...food,favourite:true}}/>
+                <FavouritesItem key={food.id} user={session.user} food={{...food,favourite:true}}/>
             ))
             :<div className='text-gray-3 mx-auto text-center italic py-10 text-sm'>No favourites to show</div>
             }

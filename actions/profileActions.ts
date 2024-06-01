@@ -1,10 +1,12 @@
 "use server"
 import { ConnectionError, userDataType } from '@/libs/types';
-import { saveUserDataToDb } from '../utils/db';
-import { parseZodError, profileDetailsSchema } from '@/libs/zod';
+import { getUserPassword, saveUserDataToDb, updatePassword } from '../utils/db';
+import { changePasswordSchema, parseZodError, profileDetailsSchema } from '@/libs/zod';
 import { ZodError, string } from 'zod';
 import { quickUpload } from '@/libs/cloudinary';
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { auth } from '@/auth';
+import { hashPassword, isPasswordValid } from '@/utils/passworder';
 
 
 export const saveUserData=async(data:userDataType)=>{
@@ -42,4 +44,29 @@ const uploadImg=async(dataURI:string)=>{
     const {result,error} = await quickUpload(dataURI)
     return {url:result?.url,error}
 
+}
+
+export const changePassword=async (userid:string,formData:FormData)=>{
+    try{
+       const {currentPassword,newPassword,confirmPassword}= await changePasswordSchema.parseAsync({
+            currentPassword:formData.get('currentPassword') as string,
+            newPassword:formData.get('newPassword') as string,
+            confirmPassword:formData.get('confirmPassword') as string,
+        })
+        const actualCurrentPassHass=await getUserPassword(userid)
+        if(! await isPasswordValid(currentPassword,actualCurrentPassHass))
+         throw new Error("Wrong Password!")
+        const newPassHash = await hashPassword(newPassword)
+        await updatePassword(userid,newPassHash)
+        return {message:"Success"}
+    }catch(e){
+        if(e instanceof ZodError){
+            const err=parseZodError(e)
+            return {error:err.message,errInputs:err.paths}
+        }
+        if (e instanceof ConnectionError)
+            return {error:e.message}
+        console.log("error",e)
+        return {error:"An error occured Changing your password your details"}
+    }
 }

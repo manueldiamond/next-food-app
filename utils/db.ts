@@ -15,6 +15,15 @@ const tryCatchConnectionErr=async<T>(tryFunction:()=>T)=>{
     }
 }
 
+export const getUserPassword=async(id:string)=>tryCatchConnectionErr(async()=>{
+  const {rows} = await sql`select pass from users where id=${id} limit 1`;
+  if (rows.length<1)  throw new Error("User not found")
+  return rows[0].pass
+})
+export const updatePassword=async(id:string,newpass:string)=>tryCatchConnectionErr(async()=>{
+  await sql`update users set pass=${newpass} where id=${id}`;
+})
+
 export const isUserInDB=async(email:string)=>tryCatchConnectionErr(async()=>{
     const {rows}=await sql`select exists(select 1 from users where email=${email.toLowerCase()}) as "exists";`
     return rows[0].exists as boolean
@@ -88,7 +97,7 @@ export const getUserDataById=async(id:string)=>tryCatchConnectionErr(async()=>{
 })
 
 export const getFavouriteFoods=async(id:string)=>tryCatchConnectionErr(async()=>{
-    const {rows} = await sql`select food.* from food 
+    const {rows} = await sql`select food.id, food.name, food.img, food.vendor, food.rating from food 
                             inner join favourites 
                             on food.id=favourites.foodid
                             where userid=${id}`
