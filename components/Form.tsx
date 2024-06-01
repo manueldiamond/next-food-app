@@ -46,7 +46,7 @@ const FormChildren=({
         <>
             <div 
                 style={{gap:gap+"rem"}} 
-                className="centered flex-col  px-8"
+                className="centered flex-col  px-4 md:px-8"
             >
             {inputsArray.map(input=>
                 <TextInput 

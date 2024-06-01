@@ -57,7 +57,7 @@ const Footer = () => {
           <div className='h-full w-screen absolute bg-accent right-full'/>
           <div className='h-full w-screen absolute bg-accent left-full'/>
         </div>
-        <Link href={isadmin?"/products/edit/new":"#"} className='click-scale button  text-white !absolute rounded-full centered shadow-xl shadow-black/30 top-0 -translate-y-[60%] bg-accent size-[55px] md:size-[72px] '>
+        <Link href={isadmin?"/products/edit/new":"#"} className='click-scale button  text-white !absolute !rounded-full centered shadow-xl shadow-black/30 top-0 -translate-y-[60%] bg-accent size-[55px] md:size-[72px] '>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3.5} stroke="currentColor" className="w-6 h-6 pointer-events-none select-none">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>

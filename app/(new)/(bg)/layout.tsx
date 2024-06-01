@@ -25,7 +25,7 @@ export default function Layout({
           alt='ham'
         />
       </div>
-        <div className=' md:max-w-[600px] md:mx-auto -ml-2 mb-2 w-full bg-white rounded-[35px] mt-[100px] relative centered flex-col'>
+        <div className=' md:max-w-[600px] md:mx-auto -ml-1 mb-2 w-full bg-white rounded-[35px] mt-[100px] relative centered flex-col'>
           {children}
         </div>
     </div>

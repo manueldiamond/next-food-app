@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens:{
+        'xs': { 'max': '400px' },
+        
+      },
       container:{
         "padding":{
           DEFAULT:'1.5rem',

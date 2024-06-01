@@ -40,32 +40,44 @@ const links=[
     {title:"Order History",path:"/logs"},
     {title:"Change Password",path:"/profile/change-password"}
 ]
-const FormButton=({editing,edit}:{editing:boolean,edit:()=>void})=>{
+const FormButtons=({editing,edit}:{editing:boolean,edit:()=>void})=>{
   const {pending}= useFormStatus()
   return(
-
-    <button 
-    type={editing?'submit':'button'} 
-    onClick={()=>!editing&&edit()} 
-    disabled={pending}
-    className={`group dark-button !p-6 ${pending&&" no-scale animate-pulse"}`}
+    <>
+      <button 
+      type={editing?'submit':'button'} 
+      onClick={()=>!editing&&edit()} 
+      disabled={pending}
+      className={`group w-full dark-button md:!p-6 ${pending&&" no-scale animate-pulse"}`}
+      >
+          {pending?
+          <Spinner/>
+          :
+          <>
+            <span className={""}>{editing?("Save Changes"):"Edit Profile"}</span>
+            {editing?(
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 0 1 9 9v.375M10.125 2.25A3.375 3.375 0 0 1 13.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 0 1 3.375 3.375M9 15l2.25 2.25L15 12" />
+            </svg>):(
+          <Image    
+            width={24} 
+            height={24} 
+            alt="edit icon"
+            src={"/icons/edit.svg"} 
+            className='group-hover:scale-110 transition-transform  group-hover:-translate-y-1 aspect-square w-4 md:w-6' 
+          />)}
+          </>
+          }
+          
+      </button>
+     {!pending && <button 
+      onClick={async()=>await logout()} 
+      className=' w-full group hollow-accent-button !md:p-6'
     >
-        <span className={""}>{editing?(pending?"Saving":"Save Changes"):"Edit Profile"}</span>
-        {pending?
-        <Spinner/>
-        :editing?(
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 0 1 9 9v.375M10.125 2.25A3.375 3.375 0 0 1 13.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 0 1 3.375 3.375M9 15l2.25 2.25L15 12" />
-          </svg>
-        ):(<Image    
-          width={24} 
-          height={24} 
-          alt="edit icon"
-          src={"/icons/edit.svg"} 
-          className='group-hover:scale-110 transition-transform  group-hover:-translate-y-1' 
-        />)}
-        
-    </button>
+        <span className=''>Log Out</span>
+        <Image className='group-hover:translate-x-1 transition-transform aspect-square w-4 md:w-6 ' src={"/icons/sign-out.svg"} width={24} height={24} alt="edit icon"/>
+    </button>}
+   </>
   )
 
 }
@@ -76,7 +88,7 @@ const DetailsForm=({inputfields,editing,edit,saveAction}:any)=>{
   }
   return(
     <Form 
-      gap={1}
+      gap={.1}
       heading={editing&&"Edit Profile"}
       className='!py-0 !my-0 flex flex-col'
       submitAction={action} 
@@ -96,15 +108,9 @@ const DetailsForm=({inputfields,editing,edit,saveAction}:any)=>{
           </Link>
           ))}
         </div>
-        <div className='container max-w-[550px] centered gap-8 text-lg pt-8 font-medium'>
-          <FormButton edit={edit} editing={editing} />
-          <button 
-            onClick={async()=>await logout()} 
-            className='group hollow-accent-button !p-6'
-          >
-              <span className=''>Log Out</span>
-              <Image className='group-hover:translate-x-1 transition-transform' src={"/icons/sign-out.svg"} width={24} height={24} alt="edit icon"/>
-          </button>
+        <div className='container xs:flex-col w-full md:max-w-[550px] centered gap-4 sm:gap-6 lg:gap-8 text-lg pt-8 font-medium'>
+          <FormButtons edit={edit} editing={editing} />
+         
         </div>
       </div>
     </Form>

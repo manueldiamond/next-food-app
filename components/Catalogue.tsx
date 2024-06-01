@@ -15,7 +15,7 @@ const Catalogue = ({user}:{user?:User}) => {
   const {foods,error,isLoading,activeFilter,setFilter} = useCatalogueItems()
 
   return (
-    <div className='my-10 w-full'>
+    <div className=' my-3 sm:my-5 md:my-10 w-full'>
        <SearchFilters onFilter={setFilter}/>
         <div className='flex-wrap centered gap-5 py-10 h-full mx-auto px-0 container pb-20'>
            <LoadingComponent loading={isLoading} error={error} >

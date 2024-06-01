@@ -10,12 +10,12 @@ const Header = async() => {
   const session = await auth()
   console.log(session?.user)
   return (
-    <div className='container items-center  flex justify-between mt-6'>
+    <div className='container items-center  flex justify-between mt-1'>
        <TextLogo />
        <div className='flex gap-2 '>
         <span className='hidden sm:block text-2xl m-auto text-gray-3 font-bold '>{session?.user?.name}</span>
         <Link href={"/profile"} className=''>
-            <Avatar user={session?.user}/>
+            <Avatar className='w-[40px]  !md:w-[60px]' size={60} user={session?.user}/>
         </Link>
        </div>
     

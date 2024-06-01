@@ -114,22 +114,22 @@ h1,h2,h3,h4,h5,h6,.heading{
 }
 
 button,.button,.click-scale, button:not(.no-scale,.ns){
-  @apply p-3 px-4 relative before:absolute active:before:opacity-20 active:before:transition-opacity before:opacity-0 before:bg-black before:w-full before:h-full after:absolute overflow-clip active:after:scale-125 after:scale-0 active:after:opacity-10   after:bg-black after:aspect-square after:min-h-full after:w-full after:rounded-full after:opacity-0 after:duration-500 after:transition-transform flex justify-center items-center active:scale-95 hover:scale-105 scale-100 transition-transform duration-150
+  @apply p-3 px-4 text-xs md:text-lg relative before:absolute active:before:opacity-20 active:before:transition-opacity before:opacity-0 before:bg-black before:w-full before:h-full after:absolute overflow-hidden active:after:scale-125 after:scale-0 active:after:opacity-10   after:bg-black after:aspect-square after:min-h-full after:w-full after:rounded-full after:opacity-0 after:duration-500 after:transition-transform flex justify-center items-center active:scale-95 hover:scale-105 scale-100 transition-transform duration-150 rounded-2xl md:rounded-20
  }
 .accent-button{
-  @apply w-full click-scale rounded-20 border-solid border-[3px] text-white bg-accent centered gap-5;
+  @apply w-full button  border-solid border-[3px] text-white bg-accent centered gap-5;
 }
 .dark-button{
- @apply w-full click-scale rounded-20 centered gap-5 bg-gray-1 text-white
+ @apply w-full button  centered gap-5 bg-gray-1 text-white
 }
 .hollow-accent-button{
-  @apply w-full click-scale rounded-20 border-solid border-[3px] text-accent centered gap-5 bg-transparent border-accent 
+  @apply w-full button  border-solid border-[3px] text-accent centered gap-5 bg-transparent border-accent 
 }
 .hollow-dark-button{
-  @apply w-full click-scale rounded-20 border-solid border-[3px] text-gray-1 centered gap-5 bg-transparent border-gray-1 
+  @apply w-full button  border-solid border-[3px] text-gray-1 centered gap-5 bg-transparent border-gray-1 
 }
 .hollow-gray-button{
-  @apply w-full click-scale rounded-20 border-solid border-[3px] text-gray-3 centered gap-5 bg-transparent border-gray-3 
+  @apply w-full button  border-solid border-[3px] text-gray-3 centered gap-5 bg-transparent border-gray-3 
 }
 .product-shadow{
   @apply drop-shadow-[0_40px_20px_rgba(0,0,0,.7)]

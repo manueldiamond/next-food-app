@@ -25,10 +25,10 @@ const CatalogueItem=(
         {
             animationDelay:`${index*.2}s`
         }
-    } key={food.id} className='flex flex-col md:h-[18rem] h-[16rem] rounded-[20px] md:w-[225px] w-[185px] transition scale-up-animation group hover:scale-105 hover:shadow-2xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
+    } key={food.id} className='flex flex-col md:min-h-[18rem] sm:min-h-[16rem] min-h-[15rem] rounded-[20px] md:w-[225px] sm:w-[185px] w-[160px] transition scale-up-animation group hover:scale-105 hover:shadow-2xl hover:z-10 z-0 mt-2 p-4 bg-white shadow-[0_5px_10px_rgba(0,0,0,.1)]'>
         <Link href={`/products/${food.id}`} className=' text-gray-1 '  >
             <Image
-                className='flex-1 object-contain group-hover:scale-105 w-[120px] aspect-square centered catalogue-display-item-shadow mb-4 mx-auto' 
+                className='flex-1 object-contain group-hover:scale-105 w-[90px] sm:w-[100px] md:w-[120px] aspect-square centered catalogue-display-item-shadow mb-4 mx-auto' 
                 src={food.img}
                 width={120}
                 height={120}
