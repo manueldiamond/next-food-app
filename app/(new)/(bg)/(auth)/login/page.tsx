@@ -26,7 +26,6 @@ const loginInputs = [
 
 const page = ({params}:{params:Record<string,string>}) => {
     const {callbackUr}=params
-    const {login,logout} = useAuthContext()
     const {setErrorMsg,setErrored,clearErrors,controls:formControls} = useForm()
     
     const handleSubmit=async(formData:FormData)=>{
@@ -48,11 +47,13 @@ const page = ({params}:{params:Record<string,string>}) => {
                     setErrored(response.errInputs)
             }
             return;
+        }else{
+
         }
         
 
-        setErrorMsg("Something went wrong, Please try again later")
-        logout!()
+        // setErrorMsg("Something went wrong, Please try again later")
+        // logout!()
     }
     
   
