@@ -18,7 +18,7 @@ const page = async({searchParams}:{searchParams:Record<string,string>}) => {
             <li key={food.id}>
                 <ListedProduct 
                     food={food} 
-                    userid={session?.user?.id!}
+                    user={session?.user}
                 />
             </li>
         ))):<ErrorText text={"No results found for '"+searchParams.query+"'" }/>}
