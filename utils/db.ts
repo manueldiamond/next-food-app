@@ -22,7 +22,7 @@ export const isUserInDB=async(email:string)=>tryCatchConnectionErr(async()=>{
 
 export const getUserFromDb=async(email:string)=>tryCatchConnectionErr(async()=>{
     const {rows}=
-         await sql`select name,id,pass,profileImage
+         await sql`select name,id,pass,profileImage,role
                     from users where lower(email)=${email.toLowerCase()}
                     limit 1;`
     if (rows.length>0)
@@ -30,8 +30,8 @@ export const getUserFromDb=async(email:string)=>tryCatchConnectionErr(async()=>{
 })
 
 export const addUserToDb=async(email:string,hashedPass:string,name:string)=>tryCatchConnectionErr(async()=>{
-    await sql`insert into users (email,name,pass) values
-            (${email.toLowerCase()},${name},${hashedPass});`
+    await sql`insert into users (email,name,pass,role) values
+            (${email.toLowerCase()},${name},${hashedPass},'user');`
 })
 
 export const getFoods=async(id:string|undefined="",filters:Partial<{search:string,category:string}>)=>tryCatchConnectionErr(async()=>{
@@ -42,7 +42,7 @@ export const getFoods=async(id:string|undefined="",filters:Partial<{search:strin
    
     const lastAddedParam=()=>"$"+(params.length)
 
-    let query=`select food.* `
+    let query=`select food.id, food.name, food.img, food.vendor, food.rating `
     if(id){
         query+=` , case 
                 when fav.foodid is not null 
@@ -67,13 +67,7 @@ export const getFoods=async(id:string|undefined="",filters:Partial<{search:strin
     console.log(query)
     console.log(params)
     const {rows}= await sql.query(query,params)
-    //         select food.* ${sql``} from food
-            
-    //     `
-    //     :
-    //     (await sql`select food.* , 
-            
-    //         l)
+    
     return rows as (FoodType)[]
 })
 

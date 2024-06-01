@@ -6,6 +6,7 @@ import React from 'react'
 import { useAuthContext } from '../libs/context/authContext'
 import { useSession } from 'next-auth/react'
 import { link } from 'fs'
+import { isUserAdmin, useIsAdmin } from '@/libs/Hooks'
 
 const footerLinks=[
     {
@@ -31,12 +32,14 @@ const footerLinks=[
   ]
 
 const Footer = () => {
+  const isadmin = useIsAdmin()
   const currentPath=usePathname() as string
   const isCurrentPath=(path:string)=>currentPath===path||(currentPath.includes(path)&&path.length>1)
+
   return (
     <>
     {
-      (<><footer className=' z-50 fixed bottom-0 left-0 min-w-full h-[75px] centered'>
+      (<><footer className=' z-50 fixed bottom-0 left-0 min-w-full max-md:h-[50px] h-[75px] centered'>
         <div className='bg absolute centered h-full w-[200px] '>
           <div className='w-full h-full object-cover centered'>
             <svg className='absolute h-full' width="430" height="76" viewBox="0 0 430 76" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,7 +57,7 @@ const Footer = () => {
           <div className='h-full w-screen absolute bg-accent right-full'/>
           <div className='h-full w-screen absolute bg-accent left-full'/>
         </div>
-        <Link href={false?"#":"/products/edit/new"} className='click-scale button  text-white !absolute rounded-full centered shadow-xl shadow-black/30 top-0 -translate-y-[60%] bg-accent h-[72px] w-[72px]'>
+        <Link href={isadmin?"/products/edit/new":"#"} className='click-scale button  text-white !absolute rounded-full centered shadow-xl shadow-black/30 top-0 -translate-y-[60%] bg-accent size-[55px] md:size-[72px] '>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3.5} stroke="currentColor" className="w-6 h-6 pointer-events-none select-none">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
@@ -65,13 +68,14 @@ const Footer = () => {
               return(
                 <>{(index===Math.floor(footerLinks.length/2))&&<span className='mx-5'/>}
                   <li key={item.link}>
-                    <Link href={item.link} className={' click-scale rounded-full flex flex-col gap-1 items-center '+(!current&&"hover:opacity-100 opacity-70 ")}>
+                    <Link href={item.link} className={' md:min-w-6 min-w-3  click-scale rounded-full flex flex-col gap-1 items-center '+(!current&&"hover:opacity-100 opacity-70 aspect-square")}>
                       <Image src={item.icon}
+                        className='flex-1 flex w-full h-full'
                         width = {24}
                         height = {24}
                         alt = {`${item.name} icon`}
                       />
-                    {current&&<div className='dot'>
+                    {current&&<div className='dot size-1'>
                         <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="2" cy="2" r="2" fill="white"/>
                         </svg>

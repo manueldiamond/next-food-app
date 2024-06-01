@@ -8,10 +8,11 @@ import { ErrorText, Spinner } from '.';
 import LoadingComponent from './LoadingComponent';
 import { useCatalogueItems } from '@/libs/dataFetches';
 import { useObjectState } from '@/libs/Hooks';
+import { User } from 'next-auth';
 
-const Catalogue = ({userid}:{userid?:string}) => {
+const Catalogue = ({user}:{user?:User}) => {
 
-  const {foods,error,isLoading,activeFilter,setFilter} = useCatalogueItems(userid)
+  const {foods,error,isLoading,activeFilter,setFilter} = useCatalogueItems(user?.id)
 
   return (
     <div className='my-10 w-full'>
@@ -19,7 +20,7 @@ const Catalogue = ({userid}:{userid?:string}) => {
         <div className='flex-wrap centered gap-5 py-10 h-full mx-auto px-0 container pb-20'>
            <LoadingComponent loading={isLoading} error={error} >
             {foods&&foods.map((food:FoodType,index:number)=>(
-              <CatalogueItem index={index} userid={userid} key={`${food.id}`} food={food}/>
+              <CatalogueItem index={index} user={user} key={`${food.id}`} food={food}/>
               ))}
            </LoadingComponent>
        </div>

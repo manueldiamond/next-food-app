@@ -178,7 +178,7 @@ const ProfileOptions = ({user}:{user:User|undefined}) => {
     <div className='w-full relative pb-10'>
         <Avatar 
           size={151} onClick={editing?changePhoto:undefined}
-          className={`${editing&&"click-scale border-4 !border-white"} !border-t-4 top-0 mx-auto !bg-accent-gradient -translate-y-1/2 profile !rounded-[30px] !w-[30%] !min-w-[151px] aspect-square !p-0`} 
+          className={`${editing&&"click-scale border-4 !border-white"} !border-none  top-0 mx-auto !bg-accent-gradient -translate-y-1/2 profile !rounded-full !w-[30%] !min-w-[151px] aspect-square !p-0`} 
           user={editing?editedUser:user}
         >
           <FileInputHelper/>

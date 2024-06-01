@@ -11,6 +11,7 @@ import React from 'react'
 import { Session } from 'next-auth';
 import { auth } from '@/auth'
 import EditIcon from '@/components/EditIcon'
+import { isUserAdmin } from '@/libs/Hooks'
 
 
 type staticParamsPropsType={
@@ -36,7 +37,7 @@ const page = async({params}:staticParamsPropsType) => {
         <FavouriteButton className='size-8' foodid={data.id} userid={session?.user?.id!} defaultValue={data.favourite}/>
       </div>
       <div className='relative w-full'>
-        <EditIcon id={data.id}/>
+       {isUserAdmin(session?.user)&&<EditIcon id={data.id}/>}
       </div>
       <div className='flex items-center py-4 rating__and__time'>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

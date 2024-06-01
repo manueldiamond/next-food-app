@@ -26,26 +26,27 @@ export const useCatalogueItems=(id?:string)=>{
 }
 
 export const useProductdData=(id?:string)=>{
+    const defaults = {
+        description:"",
+        id:"",
+        img:"/some-ham.png",
+        preptime:"",
+        name:"Burger",
+        price:0,
+        rating:0,
+        vendor:"Vendor A",            
+}
     if(!id){
         return {
             isLoading:false,
             error:"",
             mutate:()=>{},
-            data:{
-                description:"",
-                id:"",
-                img:"/some-ham.png",
-                preptime:"",
-                name:"Burger",
-                price:0,
-                rating:0,
-                vendor:"Vendor A",            
-        } as FoodType}
+            data:defaults as FoodType}
     }
    let url=`/api/get-food-by-id/${id}`
 
    const result = useSWR(url,fetcher,{revalidateOnFocus:false,refreshWhenHidden:false})
-   return {...result,data:result.data?.data as FoodType}
+   return {...result,data:result.data?.data.name?(result.data?.data):defaults as FoodType}
 }
 
 export const useGetUserData=(id:string)=>{    

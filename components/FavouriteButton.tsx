@@ -3,7 +3,7 @@ import { useFavourite } from '@/libs/Hooks'
 import React from 'react'
 
 type favouriteButtonTypes={
-    userid:string|null,
+    userid?:string|null,
     foodid:string|null,
     defaultValue?:boolean
     className?:string

@@ -1,6 +1,9 @@
 "use client"
 import { isFavouriteFood, setFavouriteFood } from "@/utils/db";
+import { User } from "next-auth";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
+import { string } from "zod";
 
 export const useObjectState=<T extends object>(obj:T)=>{
     const [state,setState]=useState(obj)
@@ -17,7 +20,7 @@ export const useObjectState=<T extends object>(obj:T)=>{
     return [state, editState] as [T,typeof editState]
 }
 
-export const useFavourite=(userid:string|null,foodid:string|null,def?:boolean)=>{
+export const useFavourite=(userid:string|null|undefined,foodid:string|null,def?:boolean)=>{
     type favouriteStateType={favourite?:boolean,previousValue?:boolean,toUpdate?:boolean}
     const [{favourite,previousValue,toUpdate},setFavState]=useState<favouriteStateType>({favourite:def,previousValue:def,toUpdate:typeof def==='undefined'});
     const intervalRef = useRef<any>(null)
@@ -61,4 +64,10 @@ export const useFavourite=(userid:string|null,foodid:string|null,def?:boolean)=>
     return {favourite,toggleFavourite}
 }
 
-
+export const isUserAdmin=(user?:User&{role?:string})=>{
+    return (user?.role==="admin")
+}
+export const useIsAdmin=()=>{
+    const {data}=useSession()
+    return isUserAdmin(data?.user)
+}
