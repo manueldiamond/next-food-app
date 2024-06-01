@@ -23,7 +23,7 @@ const Avatar = ({size=60,onClick,className="",user,children}:avatarProps) => {
     }
   }
   return (
-    <div onClick={onClick} className={`select-none border-white ${className} transition-colors ${initials?" select-none bg-accent/50 hover:bg-accent":" bg-gray-3/10 hover:bg-gray-3/70"} centered overflow-clip profile aspect-square w-[60px] rounded-full`}>
+    <div onClick={onClick} className={`select-none border-white ${className} transition-colors ${initials?" select-none bg-accent/50 hover:bg-accent":" bg-gray-3/10 hover:bg-gray-3/70"} centered overflow-hidden profile aspect-square w-[60px] rounded-full`}>
         {imgURL?<Image
             className='w-full h-full object-cover' 
             src={imgURL}
