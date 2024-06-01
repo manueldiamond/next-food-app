@@ -8,7 +8,7 @@ export default async function Home() {
     <main className="">
       <Header/>
       <p className=" container text-lg text-gray-2">Order your favourite food around Central campus!</p>
-      <Catalogue userid={session?.user?.id}/>
+      <Catalogue user={session?.user}/>
       {session&&<Footer/>}
     </main>
   );

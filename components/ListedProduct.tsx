@@ -3,17 +3,19 @@ import Image from 'next/image';
 import Link from 'next/link'
 import FavouriteButton from './FavouriteButton';
 import EditIcon from './EditIcon';
+import { User } from 'next-auth';
+import { isUserAdmin } from '@/libs/Hooks';
 
 
 
-type favouriteItemProps={
+type listedItemProps={
     food:FoodType
     key?:any,
-    userid:string
+    user?:User
 }
 
 const ListedProduct=(
-    {food,key,userid}:favouriteItemProps
+    {food,key,user}:listedItemProps
 )=>{
     if(!key) key=food.id
     return( 
@@ -35,7 +37,7 @@ const ListedProduct=(
                 <p className='ml-2 text-gray-3'>From {food.vendor}</p>
             </div>
         </Link>
-        <EditIcon id={food.id} />
+        {isUserAdmin(user)&&<EditIcon id={food.id} />}
         <div className='rating_and_favourite bottom flex-col flex h-full justify-between items-center '>
             <div className='rating flex gap-1 items-center'> 
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +49,7 @@ const ListedProduct=(
             
             <FavouriteButton 
                 className={"h-[2rem] aspect-square"}
-                userid={userid}
+                userid={user?.id}
                 foodid={food.id}
                 defaultValue={food.favourite} 
             />

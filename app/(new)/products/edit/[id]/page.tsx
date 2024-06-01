@@ -12,6 +12,7 @@ import { useProductdData } from '@/libs/dataFetches';
 import { useRouter } from 'next/navigation';
 import { updateFoodInDB } from '../../../../../actions/addAction';
 import { useForm } from '../../../../../components/Form';
+import { useIsAdmin } from '@/libs/Hooks';
 
 
 type addProductsFormInput=Omit<formInput,'name'>&{
@@ -39,18 +40,23 @@ const mapDataToInputs=(data:FoodType|null|undefined)=>{
 }
 
 const page = ({params}:{params:{id?:string}}) => {
+    const router = useRouter()
+    const isadmin=useIsAdmin()
+    
+    if (!isadmin)  router.replace('/')
+          
     const id = params.id
     const editing=id!=="new"
     let inputsArray=SCEHEMA
+
     const {data,mutate,isLoading,error} = useProductdData(editing?id:undefined)
     
     let defaultImageURL = "/some-ham.png"
-    
-    inputsArray=useMemo(()=>mapDataToInputs(data),[
-        ...(
-        (data)?
-        [data.name,data.description,data.img,data.preptime,data.price,data.vendor,data.rating]:
-        [0,0,0,0,0,0,0])])
+    inputsArray=useMemo(()=>mapDataToInputs(data),
+        [
+            data.name, data.description,data.img,
+            data.preptime,data.price,data.vendor,data.rating
+        ])
 
     if(!isLoading&&data&&data.img)  defaultImageURL = data.img
     
@@ -61,7 +67,6 @@ const page = ({params}:{params:{id?:string}}) => {
     
     const {controls:formControls,setErrorMsg,setGoodMsg,setErrored} = useForm()
 
-    const router = useRouter()
     async function deleteProduct() {
         const result = await (removeProduct(data.id))
         const {error}=result
@@ -69,9 +74,10 @@ const page = ({params}:{params:{id?:string}}) => {
         if(error)
              setErrorMsg(error)
         else
-           {    alert("DELETED")
-                 router.replace("/products/edit/new")
-            }
+        {
+            alert("DELETED")
+            router.replace("/products/edit/new")
+        }
     }
 
     async function addProduct (formData:FormData){
@@ -80,7 +86,7 @@ const page = ({params}:{params:{id?:string}}) => {
         data.name = formData.get('name') as string;
         data.description = formData.get('description') as string;
         data.preptime = formData.get('preptime') as string | null;
-        data.favourite = (formData.get('favourite') === 'true') ? true : (formData.get('favourite') === 'false') ? false : undefined;
+        data.favourite = (formData.get('favourite') === 'true')? ( true ) : (formData.get('favourite') === 'false') ? false : undefined;
         data.rating = parseFloat(formData.get('rating') as string);
         data.vendor = formData.get('vendor') as string | null;
         data.published = formData.get('published') === 'true';
