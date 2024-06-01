@@ -9,7 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       container:{
-        "padding":"1.5rem",
+        "padding":{
+          DEFAULT:'1.5rem',
+          sm:'.5rem',
+        },
         center:true,
       },
       borderRadius:{

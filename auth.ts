@@ -18,6 +18,7 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
      clientId: process.env.AUTH_GOOGLE_ID, 
      clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
+
     Credentials({
         credentials: {
             email: {},
@@ -33,16 +34,18 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
                 user = await getUserFromDb(email)
                 
                 if (!user)
-                    throw new LoginError("Invalid Email")
+                  throw new LoginError("Invalid Email")
             
                 console.log("obtained user, "+user.id,"\n validating passwords")
 
-                
                 if(!await isPasswordValid(password,user.pass))
                     throw new LoginError("Invalid Password")
 
                 console.log("Signed in as ",user.name)
-                const auth_user = {id:user.id, name:user.name, image:user.profileimage, email }
+                const auth_user = {id:user.id, role:user.role, name:user.name, image:user.profileimage, email }
+                
+                console.log("Signed in as ",user)
+
                 return auth_user
           },
     }),
@@ -51,8 +54,6 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
     callbacks: {
         async jwt({ token, user, account, profile,trigger,session }: any) {
           // Persist the OAuth access_token and or the user id to the token right after signin
-          
-          
           if(user){
             token = {...token,...user}
           }
@@ -60,7 +61,6 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
             token.accessToken = account.access_token;
             token.account = account
           }
-
           // ***************************************************************
           // added code
           if (trigger === "update" && session) 
@@ -70,7 +70,6 @@ export const { signIn, signOut, auth, handlers:{GET,POST}, unstable_update:updat
         },
         async session({ session, token, user , trigger, newSession}: any) {
           // Send properties to the client, like an access_token and user id from a provider.
-          
           if (token) {
             session.accessToken = token.accessToken;
             

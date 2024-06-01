@@ -9,7 +9,6 @@ export async function GET(request: Request) {
     const filters = searchParams.get('filters') as string
     try {
         const foods = await getFoods(id,{category:filters})
-        console.log(foods)
         return NextResponse.json({ foods }, { status: 200 });
     }catch(e){
         return NextResponse.json({ e }, { status: 400 });

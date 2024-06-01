@@ -9,6 +9,7 @@ export type userType = {
     profileimage?:string|null
     name:string,
     email:string,
+    role:'admin'|'vendor'|'user'|undefined
 }|null
 
 export type userWithPass=userType&{pass:string}
