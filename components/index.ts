@@ -15,6 +15,7 @@ import SearchFilters from '@/components/CatalogueSearchFilters';
 import PayNow from './PayNow';
 import ProductOrderButtons from './ProductOrderButtons';
 import PaymentMethods from './PaymentMethods';
+import EditProduct from './EditProduct';
 export{
     Header,Footer,Catalogue,
     HeaderControls,Counter,Slider,
@@ -23,5 +24,6 @@ export{
     Spinner,ErrorText,LoadingComponent,
     ListedProduct,SearchFilters,
     PayNow,ProductOrderButtons,
-    PaymentMethods
+    PaymentMethods,
+    EditProduct
 }

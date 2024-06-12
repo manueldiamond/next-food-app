@@ -1,7 +1,8 @@
-"use client"
+"use effect"
 import { isFavouriteFood, setFavouriteFood } from "@/utils/db";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
+import { exportTraceState } from "next/dist/trace";
 import { useEffect, useRef, useState } from "react";
 import { string } from "zod";
 
@@ -67,11 +68,24 @@ export const useFavourite=(userid:string|null|undefined,foodid:string|null,def?:
 export const isUserAdmin=(user?:User&{role?:string})=>{
     return (user?.role==="admin")
 }
+
 export const useIsAdmin=()=>{
     const {data}=useSession()
     return isUserAdmin(data?.user)
 }
+export const useAdminPage=()=>{
+    const {status:sessionStatus,data:session}=useSession()
+    let loading=true;
+    if (sessionStatus==='unauthenticated')
+        throw new Error("Access Denied!")
 
+    if(sessionStatus==='authenticated' && session?.user){
+        if (!isUserAdmin(session.user))  
+            throw new Error("Access Denied! You are not an Admin.")
+        loading=false
+    }
+    return {loading}
+}
 export const useModal=()=>{
     const [open,setOpen]=useState(false)
     return({
