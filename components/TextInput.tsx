@@ -21,7 +21,7 @@ const  TextInput = ({extra:any=undefined,className="", defaultValue="",error=fal
       )
     },[type])
   return (
-    <div key={name} className={`${className} ${error?" border-red-500 ":" border-[#E1E1E1]"} my-4 w-full flex py-1 bg-white h-[50px]  md:min-h-[60px] relative border-solid rounded-2xl md:rounded-20 border-2 `}>
+    <div key={name} className={`${className} ${error?" border-red-500 ":" border-[#E1E1E1]"} my-4 w-full flex py-1 bg-white h-max min-h-[50px]  md:min-h-[60px] relative border-solid rounded-2xl md:rounded-20 border-2 `}>
         <label style={
             {left:focused?"30px":"40px",top:focused?"0%":"50%",scale:focused?1:1.05,transformOrigin:`center center`}
         } className='overflow-visible pointer-events-none select-none rounded-full whitespace-nowrap text-[#808080] -translate-y-1/2 transition-[left_top] bg-white p-1 w-min h-min absolute flex centered  text-xs md:text-base'>

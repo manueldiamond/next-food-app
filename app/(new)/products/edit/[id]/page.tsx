@@ -5,20 +5,19 @@ import { formInput, FoodType } from '@/libs/types';
 import React, { useMemo } from 'react'
 import { useImageUpload } from '../../../../../libs/ImageUpload';
 import Image from 'next/image';
-import { ZodError, number } from 'zod';
-import { foodSchema, parseZodError } from '@/libs/zod';
 import { addFoodToDB, removeProduct } from '@/actions/addAction';
 import { useProductdData } from '@/libs/dataFetches';
 import { useRouter } from 'next/navigation';
 import { updateFoodInDB } from '../../../../../actions/addAction';
 import { useForm } from '../../../../../components/Form';
-import { useIsAdmin } from '@/libs/Hooks';
+import { isUserAdmin, useIsAdmin } from '@/libs/Hooks';
+import { useSession } from 'next-auth/react';
 
 
 type addProductsFormInput=Omit<formInput,'name'>&{
     name:keyof Omit<FoodType,'favourite'|'id'|'img'>,
 }
-``
+
 const SCEHEMA: addProductsFormInput[] = [
     { name: 'name', required: true },
     { name: 'vendor', required: false }, // nullable field
@@ -41,15 +40,18 @@ const mapDataToInputs=(data:FoodType|null|undefined)=>{
 
 const page = ({params}:{params:{id?:string}}) => {
     const router = useRouter()
-    const isadmin=useIsAdmin()
+    const {status:sessionStatus,data:session}=useSession()
     
-    if (!isadmin)  router.replace('/')
+    if (sessionStatus!=='loading')
+        if (!isUserAdmin(session?.user))  throw new Error("Access Denied")
           
     const id = params.id
     const editing=id!=="new"
     let inputsArray=SCEHEMA
 
-    const {data,mutate,isLoading,error} = useProductdData(editing?id:undefined)
+    const {data,mutate,isLoading:dataLoading,error} = useProductdData(editing?id:undefined)
+   
+    const isLoading = (dataLoading) || (sessionStatus==='loading')
     
     let defaultImageURL = "/some-ham.png"
     inputsArray=useMemo(()=>mapDataToInputs(data),
