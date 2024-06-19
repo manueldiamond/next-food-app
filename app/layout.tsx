@@ -33,10 +33,9 @@ export const metadata: Metadata = {
   creator: "Manuel D. ,TABI, LyricsJnr",
   publisher: "Tasty Chef Inc.",
 
-  manifest: "https://yourwebsite.com/manifest.json",
   openGraph: {
     type: "website",
-    url: "https://yourwebsite.com",
+    url: "https://tastychef.vercel.app",
     title: "Tasty Chef",
     description: "Order food around Central Campus online and have it delivered right to your doorstep!",
     siteName: "Tasty Chef",
